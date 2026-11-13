@@ -5,6 +5,8 @@ import org.jaudiotagger.audio.mp3.MP3File
 import org.jaudiotagger.tag.FieldKey
 import org.jaudiotagger.tag.TagOptionSingleton
 import org.jaudiotagger.tag.Tag
+import org.jaudiotagger.tag.mp4.Mp4Tag
+import org.jaudiotagger.tag.mp4.Mp4TagCreator
 import org.jaudiotagger.tag.id3.ID3v11Tag
 import org.jaudiotagger.tag.id3.ID3v22Tag
 import org.jaudiotagger.tag.id3.ID3v23Tag
@@ -93,7 +95,14 @@ object TagIO {
             tag.write(file, raw.audioStart)
             return
         }
-        fill(audio.tagOrCreateAndSetDefault, tags)
+        val tag = audio.tagOrCreateAndSetDefault
+        fill(tag, tags)
+        if (tag is Mp4Tag) {
+            // jaudiotagger's MP4 writer fails on many real files ("incorrect offsets written")
+            val ilst = Mp4TagCreator().convertMetadata(tag)
+            Mp4Writer.write(file, ByteArray(ilst.remaining()).also { ilst.get(it) })
+            return
+        }
         // update an existing ID3v1 tag too, otherwise old players show the old values
         if (audio is MP3File && audio.hasID3v1Tag() && audio.hasID3v2Tag()) {
             audio.iD3v1Tag = ID3v11Tag(audio.iD3v2Tag)
