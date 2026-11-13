@@ -67,4 +67,20 @@
     <string name="batch_read_errors">%1$d of %2$d files could not be read: %3$s</string>
     <string name="unreadable">(unreadable)</string>
     <string name="batch_errors">%1$d files done, %2$d failed</string>
+
+    <string name="convert_to_mp3">Convert to MP3</string>
+    <string name="convert_title">Convert %1$d files to MP3</string>
+    <string name="quality_v0">VBR ~245 kbps (best)</string>
+    <string name="quality_v2">VBR ~190 kbps (recommended)</string>
+    <string name="quality_320">CBR 320 kbps</string>
+    <string name="quality_192">CBR 192 kbps</string>
+    <string name="quality_128">CBR 128 kbps</string>
+    <string name="delete_originals">Delete the original files afterwards</string>
+    <string name="delete_warning">The originals are deleted for good once their MP3 is saved.</string>
+    <string name="convert_hint">Converting between lossy formats always loses a little quality. Tags and cover are copied; the MP3 is saved next to the original.</string>
+    <string name="convert_start">Convert</string>
+    <string name="converting">Converting %1$d of %2$d</string>
+    <string name="convert_done">%1$d files converted</string>
+    <string name="convert_errors">%1$d converted, %2$d failed: %3$s</string>
+    <string name="convert_cancelled">Cancelled after %1$d files</string>
 </resources>

@@ -22,6 +22,7 @@
 - **Suggestions:** values guessed from file and folder names (e.g. `Artist/Album (2004)/03 - Song.mp3`) appear as chips under the fields.
 - **Tags from file names:** `%track% - %artist% - %title%` turns `03 - Band - Song.mp3` into tags, with a live preview.
 - **Rename files from tags:** the same patterns the other way round.
+- **Convert to MP3:** M4A, FLAC, OGG, WAV and more, one file or a whole selection. VBR or CBR, tags and cover are copied, originals can be deleted afterwards.
 - **Covers:** pick any image from the gallery, large images are scaled down to 1000 px.
 - **Only the folder you choose:** access through Android's folder picker, no storage permission needed.
 - English and German.
@@ -38,17 +39,18 @@ Track and disc numbers are written with two digits when renaming; underscores in
 ## Development
 
 ```
-core/   tag reading/writing (jaudiotagger), file name patterns, batch logic. Plain JVM, unit tested
-app/    Android app (Kotlin, Jetpack Compose), folder access via the Storage Access Framework
+core/          tag reading/writing (jaudiotagger + own MP4 writer), file name patterns, suggestions. Plain JVM, unit tested
+app/           Android app (Kotlin, Jetpack Compose), folder access via the Storage Access Framework
+app/src/main/cpp/  LAME 3.100 MP3 encoder (unchanged, built as libmp3lame.so) and its JNI bridge
 ```
 
 ```sh
 ./gradlew :core:test            # works without the Android SDK
-./gradlew :app:assembleDebug    # needs the Android SDK
+./gradlew :app:assembleDebug    # needs the Android SDK and NDK
 ```
 
 Every push to `main` builds a signed APK and publishes it as a GitHub release.
 
 ## License
 
-MIT. Tag handling by [jaudiotagger](https://bitbucket.org/ijabz/jaudiotagger) (LGPL).
+MIT. Tag handling by [jaudiotagger](https://bitbucket.org/ijabz/jaudiotagger) (LGPL), MP3 encoding by [LAME](https://lame.sourceforge.io/) (LGPL, source in `app/src/main/cpp/lame`).

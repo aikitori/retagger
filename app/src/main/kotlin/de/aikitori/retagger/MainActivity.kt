@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import de.aikitori.retagger.ui.AppViewModel
 import de.aikitori.retagger.ui.BatchScreen
+import de.aikitori.retagger.ui.ConversionProgress
 import de.aikitori.retagger.ui.EditorScreen
 import de.aikitori.retagger.ui.FolderScreen
 import de.aikitori.retagger.ui.Screen
@@ -37,6 +38,7 @@ class MainActivity : ComponentActivity() {
                     Screen.Editor -> EditorScreen(model, snackbar)
                     Screen.Batch -> BatchScreen(model, snackbar)
                 }
+                model.conversion?.let { ConversionProgress(it, onCancel = model::cancelConversion) }
             }
         }
     }

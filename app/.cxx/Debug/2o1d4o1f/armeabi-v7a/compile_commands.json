@@ -1,0 +1,102 @@
+[
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/VbrTag.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/VbrTag.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/VbrTag.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/bitstream.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/bitstream.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/bitstream.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/encoder.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/encoder.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/encoder.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/fft.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/fft.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/fft.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/gain_analysis.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/gain_analysis.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/gain_analysis.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/id3tag.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/id3tag.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/id3tag.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/lame.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/lame.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/lame.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/newmdct.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/newmdct.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/newmdct.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/presets.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/presets.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/presets.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/psymodel.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/psymodel.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/psymodel.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/quantize.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/quantize.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/quantize.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/quantize_pvt.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/quantize_pvt.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/quantize_pvt.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/reservoir.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/reservoir.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/reservoir.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/set_get.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/set_get.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/set_get.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/tables.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/tables.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/tables.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/takehiro.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/takehiro.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/takehiro.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/util.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/util.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/util.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/vbrquantize.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/vbrquantize.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/vbrquantize.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -DHAVE_LIMITS_H -DHAVE_STDINT_H -DSTDC_HEADERS -Dieee754_float32_t=float -Dmp3lame_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -O2 -w -o CMakeFiles/mp3lame.dir/lame/version.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame/version.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame/version.c"
+},
+{
+  "directory": "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+  "command": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi26 --sysroot=/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Dlamejni_EXPORTS -I/home/fabian/claude/retagger/app/src/main/cpp/lame -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -fno-limit-debug-info  -fPIC -o CMakeFiles/lamejni.dir/lame_jni.c.o -c /home/fabian/claude/retagger/app/src/main/cpp/lame_jni.c",
+  "file": "/home/fabian/claude/retagger/app/src/main/cpp/lame_jni.c"
+}
+]

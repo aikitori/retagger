@@ -46,7 +46,7 @@ import de.aikitori.retagger.R
 import de.aikitori.retagger.core.AudioInfo
 import de.aikitori.retagger.core.extension
 
-private enum class Dialog { NONE, DISCARD, PARSE, RENAME }
+private enum class Dialog { NONE, DISCARD, PARSE, RENAME, CONVERT }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,6 +84,12 @@ fun EditorScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                             menu = false
                             dialog = Dialog.RENAME
                         })
+                        if (model.convertible(state.entry).isNotEmpty()) {
+                            DropdownMenuItem(text = { Text(stringResource(R.string.convert_to_mp3)) }, enabled = !state.dirty, onClick = {
+                                menu = false
+                                dialog = Dialog.CONVERT
+                            })
+                        }
                     }
                 },
             )
@@ -125,6 +131,7 @@ fun EditorScreen(model: AppViewModel, snackbar: SnackbarHostState) {
 
     when (dialog) {
         Dialog.NONE -> Unit
+        Dialog.CONVERT -> ConvertDialog(model, listOf(state.entry), onDismiss = { dialog = Dialog.NONE })
         Dialog.DISCARD -> DiscardDialog(onDismiss = { dialog = Dialog.NONE }, onDiscard = {
             dialog = Dialog.NONE
             model.backToFolder()

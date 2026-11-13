@@ -11,11 +11,15 @@ import de.aikitori.retagger.core.AudioFileTags
 import de.aikitori.retagger.core.NaturalOrder
 import de.aikitori.retagger.core.TagIO
 import de.aikitori.retagger.core.Tags
+import de.aikitori.retagger.core.baseName
 import de.aikitori.retagger.core.extension
+import de.aikitori.retagger.convert.Mp3Converter
+import de.aikitori.retagger.convert.Mp3Quality
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
+import java.util.concurrent.CancellationException
 
 /** Entry in a folder the user granted via the Storage Access Framework. */
 data class Entry(
@@ -85,6 +89,47 @@ class Library(private val context: Context) {
         return entry.copy(documentId = id, uri = DocumentsContract.buildDocumentUriUsingTree(tree, id), name = displayName(tree, id))
     }
 
+    /**
+     * Converts [entry] to MP3 in [folderId] with the same base name, tags and cover included.
+     * The original is deleted afterwards if [deleteOriginal] is set. Returns the new file.
+     */
+    fun convertToMp3(
+        entry: Entry,
+        tree: Uri,
+        folderId: String,
+        quality: Mp3Quality,
+        deleteOriginal: Boolean,
+        progress: (Float) -> Unit,
+        cancelled: () -> Boolean,
+    ): Entry {
+        val mp3 = File.createTempFile("convert", ".mp3", workDir)
+        try {
+            val tags = withCopy(entry) { input ->
+                Mp3Converter.convert(input, mp3, quality, progress, cancelled)
+                // a file without readable tags is still converted
+                runCatching { TagIO.read(input).tags }.getOrDefault(Tags())
+            }
+            if (tags != Tags()) TagIO.write(mp3, tags)
+
+            val folder = DocumentsContract.buildDocumentUriUsingTree(tree, folderId)
+            // the provider appends " (1)" if the name is taken
+            val uri = DocumentsContract.createDocument(resolver, folder, "audio/mpeg", entry.name.baseName() + ".mp3")
+                ?: throw IOException("Could not create ${entry.name.baseName()}.mp3")
+            try {
+                val output = resolver.openOutputStream(uri, "wt") ?: throw FileNotFoundException(uri.toString())
+                output.use { out -> mp3.inputStream().use { it.copyTo(out) } }
+            } catch (e: Exception) {
+                runCatching { DocumentsContract.deleteDocument(resolver, uri) }
+                throw e
+            }
+            if (deleteOriginal) DocumentsContract.deleteDocument(resolver, entry.uri)
+            val id = DocumentsContract.getDocumentId(uri)
+            return Entry(id, DocumentsContract.buildDocumentUriUsingTree(tree, id), displayName(tree, id), isDirectory = false)
+        } finally {
+            mp3.delete()
+        }
+    }
+
     private fun <T> withCopy(entry: Entry, block: (File) -> T): T {
         // jaudiotagger detects the format by extension
         val file = File.createTempFile("tag", "." + entry.name.extension().lowercase(), workDir)
@@ -92,6 +137,8 @@ class Library(private val context: Context) {
             val input = resolver.openInputStream(entry.uri) ?: throw FileNotFoundException(entry.name)
             input.use { inp -> file.outputStream().use { inp.copyTo(it) } }
             return block(file)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             // error messages from jaudiotagger name the temp file, show the real name instead
             throw IOException(e.message?.replace(file.path, entry.name)?.replace(file.name, entry.name), e)

@@ -15,6 +15,19 @@ android {
         // in CI: -PversionCode=<run number> -PversionName=0.<run number>
         versionCode = (findProperty("versionCode") as String?)?.toInt() ?: 1
         versionName = findProperty("versionName") as String? ?: "0.1.0"
+
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
+        }
+    }
+
+    // LAME for the MP3 converter
+    ndkVersion = "27.0.12077973"
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
     }
 
     // fixed key from the repo secrets (scripts/setup-keystore.sh), so updates install over the existing app

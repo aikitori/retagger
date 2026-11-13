@@ -1,0 +1,4 @@
+/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/x86_64/CMakeFiles/mp3lame.dir
+/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/x86_64/CMakeFiles/lamejni.dir
+/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/x86_64/CMakeFiles/edit_cache.dir
+/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/x86_64/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,23 @@
+# ninja log v5
+3	236	1794602808118845097	CMakeFiles/mp3lame.dir/lame/fft.c.o	792992c829dcb24c
+1	260	1794602808147845243	CMakeFiles/mp3lame.dir/lame/encoder.c.o	ab4ba0487e5d2b1e
+10	346	1794602808226845643	CMakeFiles/mp3lame.dir/lame/gain_analysis.c.o	28882a5b4d54a8e5
+0	410	1794602808295845991	CMakeFiles/mp3lame.dir/lame/VbrTag.c.o	d4c840a2ba7f78dd
+347	527	1794602808414846592	CMakeFiles/mp3lame.dir/lame/presets.c.o	18a6c9756e2509b1
+260	680	1794602808567847366	CMakeFiles/mp3lame.dir/lame/newmdct.c.o	7992954f80b2c635
+681	784	1794602808672847896	CMakeFiles/mp3lame.dir/lame/reservoir.c.o	6f77ca22b37ae9ce
+237	1297	1794602809168850403	CMakeFiles/mp3lame.dir/lame/lame.c.o	fda5a4c54a928a50
+5	1307	1794602809186850494	CMakeFiles/mp3lame.dir/lame/id3tag.c.o	48315ce436fc9940
+784	1395	1794602809280850968	CMakeFiles/mp3lame.dir/lame/quantize_pvt.c.o	d8b7f50f64be5644
+1	1463	1794602809343851287	CMakeFiles/mp3lame.dir/lame/bitstream.c.o	7dea4b9339e61a08
+1307	1469	1794602809351851327	CMakeFiles/mp3lame.dir/lame/tables.c.o	47ec069cb3aa481b
+1469	1620	1794602809505852105	CMakeFiles/mp3lame.dir/lame/version.c.o	e31a8469baee1ea1
+527	1981	1794602809860853899	CMakeFiles/mp3lame.dir/lame/quantize.c.o	b0fd7bbd260bfe6
+1464	1999	1794602809885854026	CMakeFiles/mp3lame.dir/lame/util.c.o	aa0266bfc3ad5b2f
+1981	2059	1794602809946854334	CMakeFiles/lamejni.dir/lame_jni.c.o	76bfbee14f7efa61
+1297	2146	1794602810031854763	CMakeFiles/mp3lame.dir/lame/set_get.c.o	f90cb0a618da17b6
+1395	2276	1794602810162855425	CMakeFiles/mp3lame.dir/lame/takehiro.c.o	f2e38f94063610d5
+410	2322	1794602810206855648	CMakeFiles/mp3lame.dir/lame/psymodel.c.o	b53f5cead08c6253
+1620	2442	1794602810328856264	CMakeFiles/mp3lame.dir/lame/vbrquantize.c.o	87e72a579fccd7e7
+2442	2490	1794602810376856507	/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/armeabi-v7a/libmp3lame.so	83f9b6cae9acadad
+2490	2529	1794602810416856709	/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/armeabi-v7a/liblamejni.so	2d9bfcede99771e7

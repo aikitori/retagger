@@ -21,9 +21,12 @@ import de.aikitori.retagger.core.FilenamePattern
 import de.aikitori.retagger.core.Suggestions
 import de.aikitori.retagger.core.Tags
 import de.aikitori.retagger.core.baseName
+import de.aikitori.retagger.convert.Mp3Quality
 import de.aikitori.retagger.data.Entry
 import de.aikitori.retagger.data.Library
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import java.util.concurrent.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -34,6 +37,10 @@ sealed interface Screen {
 }
 
 data class Folder(val documentId: String, val name: String)
+
+data class ConversionState(val total: Int, val index: Int = 0, val name: String = "", val fileProgress: Float = 0f) {
+    val overall get() = (index + fileProgress) / total
+}
 
 /** One file in the editor. Values hold the text as typed; it is cleaned up only on save. */
 data class EditorState(
@@ -90,6 +97,17 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Short message for the snackbar; the UI resets it once shown. */
     var message by mutableStateOf<String?>(null)
+
+    var conversion by mutableStateOf<ConversionState?>(null)
+        private set
+    private var conversionJob: Job? = null
+
+    var mp3Quality by mutableStateOf(
+        runCatching { Mp3Quality.valueOf(prefs.getString("mp3_quality", null)!!) }.getOrDefault(Mp3Quality.VBR_V2),
+    )
+        private set
+    var deleteOriginals by mutableStateOf(prefs.getBoolean("delete_originals", false))
+        private set
 
     var parsePattern by mutableStateOf(prefs.getString("parse_pattern", null) ?: FilenamePattern.DEFAULT)
         private set
@@ -288,6 +306,60 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     say(R.string.error_rename, state.entry.name, it.text())
                 }
         }
+    }
+
+    // --- MP3 conversion ---
+
+    /** Files of the selection (or [single]) that are not MP3 yet. */
+    fun convertible(single: Entry? = null): List<Entry> =
+        (single?.let(::listOf) ?: entries.filter { it.documentId in selection })
+            .filter { !it.isDirectory && !it.name.endsWith(".mp3", ignoreCase = true) }
+
+    fun convert(files: List<Entry>, quality: Mp3Quality, deleteOriginals: Boolean) {
+        val tree = tree ?: return
+        val folder = path.lastOrNull() ?: return
+        if (files.isEmpty() || conversion != null) return
+        mp3Quality = quality
+        this.deleteOriginals = deleteOriginals
+        prefs.edit {
+            putString("mp3_quality", quality.name)
+            putBoolean("delete_originals", deleteOriginals)
+        }
+        conversion = ConversionState(files.size)
+        conversionJob = viewModelScope.launch {
+            var done = 0
+            val errors = mutableListOf<String>()
+            for ((i, entry) in files.withIndex()) {
+                conversion = ConversionState(files.size, i, entry.name)
+                val job = coroutineContext[Job]
+                val result = runCatching {
+                    withContext(Dispatchers.IO) {
+                        library.convertToMp3(
+                            entry, tree, folder.documentId, quality, deleteOriginals,
+                            progress = { p -> conversion = conversion?.copy(fileProgress = p) },
+                            cancelled = { job?.isActive == false },
+                        )
+                    }
+                }
+                if (result.exceptionOrNull() is CancellationException) break
+                result.onSuccess { done++ }.onFailure { errors += "${entry.name}: ${it.text()}" }
+            }
+            val cancelled = conversionJob?.isCancelled == true
+            conversion = null
+            conversionJob = null
+            when {
+                cancelled -> say(R.string.convert_cancelled, done)
+                errors.isEmpty() -> say(R.string.convert_done, done)
+                else -> say(R.string.convert_errors, done, errors.size, errors.first())
+            }
+            // the file list changed, and the edited file may be gone
+            if (screen == Screen.Batch || (deleteOriginals && screen == Screen.Editor)) backToFolder() else refresh()
+            selection = emptySet()
+        }
+    }
+
+    fun cancelConversion() {
+        conversionJob?.cancel()
     }
 
     // --- several files ---

@@ -1,0 +1,23 @@
+# ninja log v5
+10	257	1794602810971859513	CMakeFiles/mp3lame.dir/lame/gain_analysis.c.o	e3d888a5aebaa8c8
+3	298	1794602811008859700	CMakeFiles/mp3lame.dir/lame/fft.c.o	198efa552dd29e66
+2	406	1794602811110860215	CMakeFiles/mp3lame.dir/lame/encoder.c.o	3ecc444f4fb86281
+0	495	1794602811207860706	CMakeFiles/mp3lame.dir/lame/VbrTag.c.o	3aca5674a0888134
+406	722	1794602811428861822	CMakeFiles/mp3lame.dir/lame/presets.c.o	aa3c66a3c17a28bd
+298	832	1794602811539862383	CMakeFiles/mp3lame.dir/lame/newmdct.c.o	af732d111a515276
+832	1021	1794602811736863379	CMakeFiles/mp3lame.dir/lame/reservoir.c.o	e09efd3753095d89
+1	1297	1794602812001864718	CMakeFiles/mp3lame.dir/lame/bitstream.c.o	58fa89eef048b833
+7	1464	1794602812175865597	CMakeFiles/mp3lame.dir/lame/id3tag.c.o	860e311cd70808f5
+258	1484	1794602812188865662	CMakeFiles/mp3lame.dir/lame/lame.c.o	80aa925178afd4cb
+1022	1641	1794602812349866476	CMakeFiles/mp3lame.dir/lame/quantize_pvt.c.o	da210d72ed0bbe17
+1465	1643	1794602812351866486	CMakeFiles/mp3lame.dir/lame/tables.c.o	8d58a6dfffe5dc75
+1643	1756	1794602812469867082	CMakeFiles/mp3lame.dir/lame/version.c.o	d73a73bcbf0d4774
+1298	2004	1794602812715868325	CMakeFiles/mp3lame.dir/lame/set_get.c.o	ea6cb7b23482aab3
+2004	2067	1794602812781868659	CMakeFiles/lamejni.dir/lame_jni.c.o	6b8da3279460ad61
+1641	2230	1794602812943869477	CMakeFiles/mp3lame.dir/lame/util.c.o	b08ff3889a6e0cfc
+495	2269	1794602812978869654	CMakeFiles/mp3lame.dir/lame/psymodel.c.o	b8dd2605537d63fd
+722	2398	1794602813112870331	CMakeFiles/mp3lame.dir/lame/quantize.c.o	92c99f68610b4155
+1484	2524	1794602813238870968	CMakeFiles/mp3lame.dir/lame/takehiro.c.o	7aa135fb6702ace1
+1756	2781	1794602813495872266	CMakeFiles/mp3lame.dir/lame/vbrquantize.c.o	dbb2f0c66cd72618
+2782	2830	1794602813544872514	/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/x86_64/libmp3lame.so	69be84ea6f8ee6db
+2830	2868	1794602813583872711	/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/x86_64/liblamejni.so	29796ec24f35ec2

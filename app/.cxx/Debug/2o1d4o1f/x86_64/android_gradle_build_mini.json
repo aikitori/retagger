@@ -1,0 +1,35 @@
+{
+  "buildFiles": [
+    "/home/fabian/claude/retagger/app/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/opt/android-sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/opt/android-sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "mp3lame::@6890427a1f51a3e7e1df": {
+      "artifactName": "mp3lame",
+      "abi": "x86_64",
+      "output": "/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/x86_64/libmp3lame.so",
+      "runtimeFiles": []
+    },
+    "lamejni::@6890427a1f51a3e7e1df": {
+      "artifactName": "lamejni",
+      "abi": "x86_64",
+      "output": "/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/x86_64/liblamejni.so",
+      "runtimeFiles": [
+        "/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/x86_64/libmp3lame.so"
+      ]
+    }
+  }
+}

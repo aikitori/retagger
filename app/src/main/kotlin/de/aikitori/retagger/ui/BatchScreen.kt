@@ -50,7 +50,7 @@ import de.aikitori.retagger.core.ArtworkChange
 import de.aikitori.retagger.core.Field
 import de.aikitori.retagger.core.extension
 
-private enum class BatchDialog { NONE, DISCARD, PARSE, RENAME }
+private enum class BatchDialog { NONE, DISCARD, PARSE, RENAME, CONVERT }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,6 +95,12 @@ fun BatchScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                             menu = false
                             dialog = BatchDialog.RENAME
                         })
+                        if (state.entries.any { !it.name.endsWith(".mp3", ignoreCase = true) }) {
+                            DropdownMenuItem(text = { Text(stringResource(R.string.convert_to_mp3)) }, enabled = !state.dirty, onClick = {
+                                menu = false
+                                dialog = BatchDialog.CONVERT
+                            })
+                        }
                     }
                 },
             )
@@ -164,6 +170,11 @@ fun BatchScreen(model: AppViewModel, snackbar: SnackbarHostState) {
     val labels = fieldLabels()
     when (dialog) {
         BatchDialog.NONE -> Unit
+        BatchDialog.CONVERT -> ConvertDialog(
+            model,
+            state.entries.filterNot { it.name.endsWith(".mp3", ignoreCase = true) },
+            onDismiss = { dialog = BatchDialog.NONE },
+        )
         BatchDialog.DISCARD -> DiscardDialog(onDismiss = { dialog = BatchDialog.NONE }, onDiscard = {
             dialog = BatchDialog.NONE
             model.backToFolder()

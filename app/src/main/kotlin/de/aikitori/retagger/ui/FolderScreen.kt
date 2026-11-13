@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.SelectAll
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.outlined.AudioFile
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.FolderOpen
@@ -38,6 +39,10 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -54,6 +59,8 @@ fun FolderScreen(model: AppViewModel, snackbar: SnackbarHostState) {
         uri?.let(model::pickFolder)
     }
     val selecting = model.selection.isNotEmpty()
+    var converting by remember { mutableStateOf<List<Entry>?>(null) }
+    converting?.let { files -> ConvertDialog(model, files, onDismiss = { converting = null }) }
     BackHandler(enabled = selecting || model.path.size > 1) {
         if (selecting) model.clearSelection() else model.up()
     }
@@ -81,6 +88,12 @@ fun FolderScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                 },
                 actions = {
                     if (selecting) {
+                        val convertible = model.convertible()
+                        if (convertible.isNotEmpty()) {
+                            IconButton(onClick = { converting = convertible }) {
+                                Icon(Icons.Filled.SwapHoriz, stringResource(R.string.convert_to_mp3))
+                            }
+                        }
                         IconButton(onClick = model::selectAll) { Icon(Icons.Filled.SelectAll, stringResource(R.string.select_all)) }
                     } else if (model.tree != null) {
                         IconButton(onClick = { pick.launch(model.tree) }) {

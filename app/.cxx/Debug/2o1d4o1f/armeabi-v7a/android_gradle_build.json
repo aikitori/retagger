@@ -1,0 +1,47 @@
+{
+  "buildFiles": [
+    "/home/fabian/claude/retagger/app/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/opt/android-sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/opt/android-sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/home/fabian/claude/retagger/app/.cxx/Debug/2o1d4o1f/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "lamejni::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "armeabi-v7a",
+      "artifactName": "lamejni",
+      "output": "/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/armeabi-v7a/liblamejni.so",
+      "runtimeFiles": [
+        "/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/armeabi-v7a/libmp3lame.so"
+      ]
+    },
+    "mp3lame::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "armeabi-v7a",
+      "artifactName": "mp3lame",
+      "output": "/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/armeabi-v7a/libmp3lame.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/opt/android-sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": []
+}

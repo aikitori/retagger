@@ -1,0 +1,24 @@
+# ninja log v5
+16	416	1794602788969748312	CMakeFiles/mp3lame.dir/lame/gain_analysis.c.o	83bd997e3067112c
+1	316	1794602805036829522	CMakeFiles/mp3lame.dir/lame/VbrTag.c.o	b56e618af9564866
+5	373	1794602805099829841	CMakeFiles/mp3lame.dir/lame/gain_analysis.c.o	1768f9dfb62f9dc8
+3	376	1794602805100829846	CMakeFiles/mp3lame.dir/lame/fft.c.o	c1d04f79e59c191f
+2	435	1794602805157830134	CMakeFiles/mp3lame.dir/lame/encoder.c.o	55d80ae2a7a01b77
+376	590	1794602805314830927	CMakeFiles/mp3lame.dir/lame/presets.c.o	bb39f5ea85139843
+374	717	1794602805442831574	CMakeFiles/mp3lame.dir/lame/newmdct.c.o	14d3def528b91603
+717	819	1794602805546832100	CMakeFiles/mp3lame.dir/lame/reservoir.c.o	90f3aaf7b0cc1964
+819	1550	1794602806267835743	CMakeFiles/mp3lame.dir/lame/quantize_pvt.c.o	f607977189743b
+4	1610	1794602806325836036	CMakeFiles/mp3lame.dir/lame/id3tag.c.o	390cee353c582fb5
+2	1651	1794602806374836284	CMakeFiles/mp3lame.dir/lame/bitstream.c.o	1a724634a8be7000
+317	1726	1794602806447836653	CMakeFiles/mp3lame.dir/lame/lame.c.o	eefd2b2472d02ef3
+1611	1754	1794602806480836820	CMakeFiles/mp3lame.dir/lame/tables.c.o	8103f70b138289a
+1755	1831	1794602806557837209	CMakeFiles/mp3lame.dir/lame/version.c.o	24aef1879306a15d
+1550	2266	1794602806987839382	CMakeFiles/mp3lame.dir/lame/set_get.c.o	aa867c994fe68a46
+591	2318	1794602807036839629	CMakeFiles/mp3lame.dir/lame/quantize.c.o	6f746b92c6a0d477
+435	2357	1794602807074839821	CMakeFiles/mp3lame.dir/lame/psymodel.c.o	579ca687a3971107
+2266	2367	1794602807093839917	CMakeFiles/lamejni.dir/lame_jni.c.o	930ca99d6b04bf38
+1726	2383	1794602807104839973	CMakeFiles/mp3lame.dir/lame/util.c.o	b5768fc7005eca3a
+1652	2671	1794602807397841453	CMakeFiles/mp3lame.dir/lame/takehiro.c.o	4ebb17b5eb1c552c
+1832	2755	1794602807481841878	CMakeFiles/mp3lame.dir/lame/vbrquantize.c.o	9d0154b0acaf0376
+2755	2806	1794602807530842125	/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/arm64-v8a/libmp3lame.so	6ab92aec85807ebd
+2806	2844	1794602807570842328	/home/fabian/claude/retagger/app/build/intermediates/cxx/Debug/2o1d4o1f/obj/arm64-v8a/liblamejni.so	af125c2a62febebb
