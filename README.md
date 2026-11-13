@@ -19,6 +19,7 @@
 - **Edit one file:** title, artist, album, album artist, year, track/total, disc/total, genre, composer, comment and cover.
 - **Edit many files:** select an album and set the shared fields once. Fields you don't touch stay as they are.
 - **Number tracks:** 1 to n in file name order, total included.
+- **Suggestions:** values guessed from file and folder names (e.g. `Artist/Album (2004)/03 - Song.mp3`) appear as chips under the fields.
 - **Tags from file names:** `%track% - %artist% - %title%` turns `03 - Band - Song.mp3` into tags, with a live preview.
 - **Rename files from tags:** the same patterns the other way round.
 - **Covers:** pick any image from the gallery, large images are scaled down to 1000 px.

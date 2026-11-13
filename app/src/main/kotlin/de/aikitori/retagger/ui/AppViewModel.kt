@@ -18,6 +18,7 @@ import de.aikitori.retagger.core.AudioInfo
 import de.aikitori.retagger.core.BatchEdit
 import de.aikitori.retagger.core.Field
 import de.aikitori.retagger.core.FilenamePattern
+import de.aikitori.retagger.core.Suggestions
 import de.aikitori.retagger.core.Tags
 import de.aikitori.retagger.core.baseName
 import de.aikitori.retagger.data.Entry
@@ -247,6 +248,12 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 }
         }
     }
+
+    fun suggestions(entry: Entry): Map<Field, List<String>> =
+        Suggestions.from(entry.name, path.map { it.name }, entries.filterNot { it.isDirectory }.map { it.name })
+
+    fun batchSuggestions(files: List<Entry>): Map<Field, List<String>> =
+        Suggestions.forBatch(files.map { it.name }, path.map { it.name })
 
     fun previewParse(pattern: String, entry: Entry) = FilenamePattern(pattern).parse(entry.name.baseName())
 

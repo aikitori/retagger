@@ -34,6 +34,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -107,8 +108,16 @@ fun EditorScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                         }
                     }
                 }
+                val suggestions = remember(state.entry.name) { model.suggestions(state.entry) }
                 FieldList { field, modifier ->
-                    TagField(field, state.values[field].orEmpty(), { model.setField(field, it) }, modifier, enabled = !state.busy)
+                    TagField(
+                        field = field,
+                        value = state.values[field].orEmpty(),
+                        onChange = { model.setField(field, it) },
+                        modifier = modifier,
+                        enabled = !state.busy,
+                        suggestions = suggestions[field].orEmpty(),
+                    )
                 }
             }
         }

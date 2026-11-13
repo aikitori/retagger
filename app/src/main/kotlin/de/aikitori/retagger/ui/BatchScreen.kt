@@ -37,6 +37,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -122,6 +123,7 @@ fun BatchScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                 }
 
                 val common = state.common
+                val suggestions = remember(state.entries) { model.batchSuggestions(state.entries) }
                 val various = stringResource(R.string.various)
                 FieldList { field, modifier ->
                     val edited = state.edits[field]
@@ -134,6 +136,7 @@ fun BatchScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                         placeholder = if (common[field] == null) various else null,
                         various = common[field] == null && edited == null,
                         enabled = !busy && !numbered,
+                        suggestions = suggestions[field].orEmpty(),
                         trailing = if (edited != null) {
                             { IconButton(onClick = { model.setBatchField(field, null) }) { Icon(Icons.AutoMirrored.Filled.Undo, null) } }
                         } else {

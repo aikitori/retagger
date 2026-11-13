@@ -20,6 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Album
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Icon
@@ -40,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -119,25 +122,42 @@ fun TagField(
     placeholder: String? = null,
     various: Boolean = false,
     enabled: Boolean = true,
+    suggestions: List<String> = emptyList(),
     trailing: @Composable (() -> Unit)? = null,
 ) {
     val invalid = field.numeric && !value.trim().all(Char::isDigit)
-    OutlinedTextField(
-        value = value,
-        onValueChange = onChange,
-        modifier = modifier,
-        enabled = enabled,
-        label = { Text(if (various) "${field.label()} ${stringResource(R.string.various)}" else field.label()) },
-        placeholder = placeholder?.let { { Text(it) } },
-        singleLine = field != Field.COMMENT,
-        isError = invalid,
-        supportingText = if (invalid) ({ Text(stringResource(R.string.invalid_number)) }) else null,
-        trailingIcon = trailing,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = if (field.numeric) KeyboardType.Number else KeyboardType.Text,
-            capitalization = if (field.numeric || field == Field.YEAR) KeyboardCapitalization.None else KeyboardCapitalization.Words,
-        ),
-    )
+    var focused by remember { mutableStateOf(false) }
+    Column(modifier) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onChange,
+            modifier = Modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused },
+            enabled = enabled,
+            label = { Text(if (various) "${field.label()} ${stringResource(R.string.various)}" else field.label()) },
+            placeholder = placeholder?.let { { Text(it) } },
+            singleLine = field != Field.COMMENT,
+            isError = invalid,
+            supportingText = if (invalid) ({ Text(stringResource(R.string.invalid_number)) }) else null,
+            trailingIcon = trailing,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = if (field.numeric) KeyboardType.Number else KeyboardType.Text,
+                capitalization = if (field.numeric || field == Field.YEAR) KeyboardCapitalization.None else KeyboardCapitalization.Words,
+            ),
+        )
+        // guesses from file and folder names, shown for empty fields and the one being edited
+        val offered = suggestions.filterNot { it == value.trim() }
+        if (enabled && offered.isNotEmpty() && (focused || value.isBlank())) {
+            Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                for (suggestion in offered) {
+                    SuggestionChip(
+                        onClick = { onChange(suggestion) },
+                        label = { Text(suggestion, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        icon = { Icon(Icons.Outlined.AutoAwesome, null, Modifier.size(16.dp)) },
+                    )
+                }
+            }
+    }
+    }
 }
 
 @Composable
