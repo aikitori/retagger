@@ -1,8 +1,8 @@
-package de.aikitori.tagwerk.core
+package de.aikitori.retagger.core
 
 /**
- * Muster wie `%track% - %artist% - %title%`, um Tags aus dem Dateinamen zu lesen
- * oder Dateien nach ihren Tags umzubenennen. Dateinamen hier immer ohne Endung.
+ * Patterns like `%track% - %artist% - %title%` to read tags from file names
+ * or rename files from their tags. File names here never include the extension.
  */
 class FilenamePattern(val pattern: String) {
     private sealed interface Part
@@ -33,7 +33,7 @@ class FilenamePattern(val pattern: String) {
         }
     }.toRegex()
 
-    /** Liest die Felder aus einem Dateinamen; null, wenn der Name nicht zum Muster passt. */
+    /** Reads the fields from a file name; null if the name does not match. */
     fun parse(baseName: String): Map<Field, String>? {
         val match = regex.matchEntire(baseName) ?: return null
         return fields.zip(match.groupValues.drop(1)).associate { (field, value) ->
@@ -41,7 +41,7 @@ class FilenamePattern(val pattern: String) {
         }
     }
 
-    /** Baut den Dateinamen aus den Tags; Zeichen, die in Dateinamen stören, werden ersetzt. */
+    /** Builds the file name from the tags; characters not allowed in file names are replaced. */
     fun format(tags: Tags): String = parts.joinToString("") { part ->
         when (part) {
             is Literal -> part.text

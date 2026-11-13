@@ -1,6 +1,6 @@
-package de.aikitori.tagwerk.core
+package de.aikitori.retagger.core
 
-/** Die Felder, die Tagwerk bearbeitet. Die Reihenfolge ist auch die Reihenfolge im Editor. */
+/** The fields Retagger edits, in editor order. */
 enum class Field(val numeric: Boolean = false) {
     TITLE,
     ARTIST,
@@ -21,7 +21,7 @@ class Artwork(val data: ByteArray, val mimeType: String) {
     override fun hashCode() = 31 * data.contentHashCode() + mimeType.hashCode()
 }
 
-/** Tags einer Datei. Leere Felder fehlen in [fields]. */
+/** Tags of one file. Empty fields are absent from [fields]. */
 data class Tags(val fields: Map<Field, String> = emptyMap(), val artwork: Artwork? = null) {
     operator fun get(field: Field): String = fields[field].orEmpty()
 
@@ -32,13 +32,13 @@ data class Tags(val fields: Map<Field, String> = emptyMap(), val artwork: Artwor
 
     fun with(values: Map<Field, String>): Tags = values.entries.fold(this) { tags, (field, value) -> tags.with(field, value) }
 
-    /** Felder, deren Wert nicht passt (z. B. Buchstaben in der Tracknummer). */
+    /** Fields with an invalid value (e.g. letters in the track number). */
     fun invalidFields(): Set<Field> = fields.filter { (field, value) -> !isValid(field, value) }.keys
 
     companion object {
         fun normalize(field: Field, value: String): String {
             val trimmed = value.trim()
-            // "07" als 7 speichern, sonst schreiben die Formate es unterschiedlich zurück
+            // store "07" as 7, the formats would otherwise write it back differently
             return if (field.numeric && trimmed.all(Char::isDigit) && trimmed.isNotEmpty()) {
                 trimmed.trimStart('0').ifEmpty { "0" }
             } else {
@@ -50,7 +50,7 @@ data class Tags(val fields: Map<Field, String> = emptyMap(), val artwork: Artwor
     }
 }
 
-/** Technische Angaben zur Datei, nur zum Anzeigen. */
+/** Technical details of the file, for display only. */
 data class AudioInfo(val format: String, val seconds: Int, val bitrateKbps: String)
 
 data class AudioFileTags(val tags: Tags, val info: AudioInfo)

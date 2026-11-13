@@ -1,8 +1,8 @@
-package de.aikitori.tagwerk.core
+package de.aikitori.retagger.core
 
 import org.jaudiotagger.tag.images.AndroidArtwork
 
-/** Breite und Höhe aus dem Kopf von PNG- und JPEG-Dateien, ohne das Bild zu dekodieren. */
+/** Width and height from the header of PNG and JPEG files, without decoding the image. */
 object ImageSize {
     fun of(data: ByteArray): Pair<Int, Int>? = png(data) ?: jpeg(data)
 
@@ -21,7 +21,7 @@ object ImageSize {
         while (i + 9 < data.size) {
             if (u8(data, i) != 0xff) return null
             val marker = u8(data, i + 1)
-            // SOF0..SOF15 außer DHT (C4), JPG (C8) und DAC (CC)
+            // SOF0..SOF15 except DHT (C4), JPG (C8) and DAC (CC)
             if (marker in 0xc0..0xcf && marker != 0xc4 && marker != 0xc8 && marker != 0xcc) {
                 return u16(data, i + 7) to u16(data, i + 5)
             }
@@ -32,14 +32,14 @@ object ImageSize {
 }
 
 /**
- * Cover für jaudiotagger, das die Bildmaße selbst ausliest. Die eingebauten Varianten brauchen dafür
- * javax.imageio (gibt es auf Android nicht) oder werfen eine Ausnahme (FLAC und Vorbis).
+ * Artwork for jaudiotagger that reads the image size itself. The built-in variants need
+ * javax.imageio for that (missing on Android) or throw (FLAC and Vorbis).
  */
 internal class SizedArtwork(data: ByteArray, mime: String) : AndroidArtwork() {
     init {
         binaryData = data
         mimeType = mime
-        pictureType = 3 // Vorderseite
+        pictureType = 3 // front cover
         setImageFromData()
     }
 

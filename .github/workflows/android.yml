@@ -1,6 +1,6 @@
-# Tests und APK bauen.
-# - Push auf main / manuell: signiertes APK als GitHub-Release (v0.<Laufnummer>).
-# - andere Branches und Pull Requests: nur Prüfbau (Debug-APK als Artefakt).
+# Run tests and build the APK.
+# - push to main / manual: signed APK as a GitHub release (v0.<run number>).
+# - other branches and pull requests: check build only (debug APK as artifact).
 name: Build
 
 on:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # Release anlegen
+  contents: write # create releases
 
 concurrency:
   group: build-${{ github.ref }}
@@ -33,7 +33,7 @@ jobs:
       - name: Tests
         run: ./gradlew --console=plain :core:test
 
-      - name: Signaturschlüssel aus den Secrets holen
+      - name: Load signing key from secrets
         if: env.RELEASE == 'true'
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -46,13 +46,13 @@ jobs:
             if [ -z "${!name}" ]; then missing="$missing $name"; fi
           done
           if [ -n "$missing" ]; then
-            echo "::error title=Signaturschlüssel fehlt::Diese Repo-Secrets fehlen:$missing. Einmalig einrichten: bash scripts/keystore-einrichten.sh (README, Abschnitt Release)."
+            echo "::error title=Signing key missing::These repo secrets are missing:$missing. Set them up once: bash scripts/setup-keystore.sh"
             exit 1
           fi
           echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
           echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
 
-      - name: Signiertes APK bauen
+      - name: Build signed APK
         if: env.RELEASE == 'true'
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -60,33 +60,33 @@ jobs:
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           ./gradlew --console=plain :app:assembleRelease -PversionCode=${{ github.run_number }} -PversionName=0.${{ github.run_number }}
-          cp app/build/outputs/apk/release/app-release.apk "$GITHUB_WORKSPACE/tagwerk.apk"
-          # sicherstellen, dass es wirklich mit dem festen Schlüssel signiert ist
+          cp app/build/outputs/apk/release/app-release.apk "$GITHUB_WORKSPACE/retagger.apk"
+          # make sure it really is signed with the fixed key
           apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
-          "$apksigner" verify --print-certs "$GITHUB_WORKSPACE/tagwerk.apk"
+          "$apksigner" verify --print-certs "$GITHUB_WORKSPACE/retagger.apk"
 
-      - name: Als Release veröffentlichen
+      - name: Publish release
         if: env.RELEASE == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v0.${{ github.run_number }}
-          name: Tagwerk v0.${{ github.run_number }}
+          name: Retagger v0.${{ github.run_number }}
           target_commitish: ${{ github.sha }}
           make_latest: true
-          files: tagwerk.apk
+          files: retagger.apk
           body: |
-            Automatisch gebaut aus ${{ github.sha }}.
-            Aufs Handy: https://github.com/${{ github.repository }}/releases/latest/download/tagwerk.apk
+            Built automatically from ${{ github.sha }}.
+            Download: https://github.com/${{ github.repository }}/releases/latest/download/retagger.apk
 
-      - name: Prüfbau (Debug-APK)
+      - name: Check build (debug APK)
         if: env.RELEASE != 'true'
         run: ./gradlew --console=plain :app:assembleDebug -PversionCode=${{ github.run_number }}
 
-      - name: Prüfbau hochladen
+      - name: Upload check build
         if: env.RELEASE != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: tagwerk-debug
+          name: retagger-debug
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 14

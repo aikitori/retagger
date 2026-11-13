@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk.ui
+package de.aikitori.retagger.ui
 
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -50,13 +50,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import de.aikitori.tagwerk.R
-import de.aikitori.tagwerk.core.Artwork
-import de.aikitori.tagwerk.core.Field
-import de.aikitori.tagwerk.core.FilenamePattern
+import de.aikitori.retagger.R
+import de.aikitori.retagger.core.Artwork
+import de.aikitori.retagger.core.Field
+import de.aikitori.retagger.core.FilenamePattern
 
 @Composable
-fun TagwerkTheme(content: @Composable () -> Unit) {
+fun RetaggerTheme(content: @Composable () -> Unit) {
     val dark = isSystemInDarkTheme()
     val context = LocalContext.current
     val colors = when {
@@ -85,12 +85,12 @@ fun Field.label(): String = stringResource(
     },
 )
 
-/** Felder, die im Editor nebeneinander stehen ("Track 3 von 12"). */
+/** Fields shown side by side in the editor ("track 3 of 12"). */
 val PAIRED = mapOf(Field.TRACK to Field.TRACK_TOTAL, Field.DISC to Field.DISC_TOTAL)
 
 /**
- * Alle Tag-Felder untereinander, Track/CD jeweils mit Gesamtzahl in einer Zeile.
- * [field] zeichnet ein einzelnes Feld.
+ * All tag fields in a column, track and disc each next to their total.
+ * [field] draws a single field.
  */
 @Composable
 fun FieldList(field: @Composable (Field, Modifier) -> Unit) {
@@ -160,8 +160,8 @@ fun Cover(artwork: Artwork?, size: Dp = 112.dp) {
 }
 
 /**
- * Dialog für ein Dateinamen-Muster mit Vorschlägen und Vorschau.
- * [preview] liefert für das Muster Zeilen aus Dateiname und Ergebnis (null = passt nicht).
+ * Dialog for a file name pattern with suggestions and a preview.
+ * [preview] returns rows of file name and result for the pattern (null = no match).
  */
 @Composable
 fun PatternDialog(
@@ -220,7 +220,7 @@ fun PatternDialog(
 @Composable
 fun fieldLabels(): Map<Field, String> = Field.entries.associateWith { it.label() }
 
-/** Gelesene Felder als kurze Zeile für die Vorschau. */
+/** Parsed fields as a short line for the preview. */
 fun describe(fields: Map<Field, String>, labels: Map<Field, String>): String =
     fields.entries.joinToString(" · ") { (field, value) -> "${labels[field]}: $value" }
 

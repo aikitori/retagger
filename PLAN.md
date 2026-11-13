@@ -1,19 +1,19 @@
 # Plan
 
-## Erledigt (v0.1)
+## Done (v0.1)
 
-- [x] core: Tags lesen/schreiben für alle jaudiotagger-Formate, Cover ohne javax.imageio (Android)
-- [x] core: Dateinamen-Muster (Tags aus Dateiname, Umbenennen), Stapelbearbeitung, natürliche Sortierung
-- [x] App: Ordner per SAF wählen (bleibt gespeichert), Unterordner, Mehrfachauswahl
-- [x] App: Editor für eine Datei inkl. Cover, Tags aus Dateiname, Umbenennen
-- [x] App: Stapelbearbeitung mit gemeinsamen Werten, Tracks durchnummerieren, Cover für alle
-- [x] DE/EN, CI mit signiertem Release
+- [x] core: read/write tags for all jaudiotagger formats, artwork without javax.imageio (Android)
+- [x] core: file name patterns (tags from file name, rename), batch editing, natural sort order
+- [x] app: pick a folder via SAF (remembered), subfolders, multi-select
+- [x] app: single-file editor with cover, tags from file name, rename
+- [x] app: batch editing with shared values, track numbering, cover for all files
+- [x] English/German UI, CI with signed releases
 
-## Offen / Ideen
+## Open / ideas
 
-- [ ] Am Handy testen: MP3, FLAC, M4A, OGG; großer Ordner; SD-Karte
-- [ ] Screenshots fürs README
-- [ ] Opus (jaudiotagger kann es nicht, bräuchte eine andere Bibliothek)
-- [ ] Mehr Felder (Text/Lyrics, BPM, Compilation)
-- [ ] „Öffnen mit“ aus anderen Apps, Cover als Datei speichern
-- [ ] Rückgängig für Stapelbearbeitung
+- [ ] Test on a phone: MP3, FLAC, M4A, OGG; large folder; SD card
+- [ ] Screenshots for the README
+- [ ] Opus (not supported by jaudiotagger, would need another library)
+- [ ] More fields (lyrics, BPM, compilation)
+- [ ] "Open with" from other apps, save cover as file
+- [ ] Undo for batch edits

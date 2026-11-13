@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Tagwerk</string>
+    <string name="app_name" translatable="false">Retagger</string>
 
     <string name="welcome_title">Edit the tags of your music</string>
-    <string name="welcome_text">Pick a folder with music files. Tagwerk only gets access to that folder and its subfolders.</string>
+    <string name="welcome_text">Pick a folder with music files. Retagger only gets access to that folder and its subfolders.</string>
     <string name="choose_folder">Choose music folder</string>
     <string name="change_folder">Change folder</string>
     <string name="empty_folder">No music files in this folder</string>

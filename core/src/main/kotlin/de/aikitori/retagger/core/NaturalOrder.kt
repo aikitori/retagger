@@ -1,6 +1,6 @@
-package de.aikitori.tagwerk.core
+package de.aikitori.retagger.core
 
-/** Sortiert "2 - …" vor "10 - …". */
+/** Sorts "2 - …" before "10 - …". */
 object NaturalOrder : Comparator<String> {
     private val chunks = Regex("\\d+|\\D+")
 

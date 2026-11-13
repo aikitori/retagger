@@ -1,15 +1,15 @@
 <div align="center">
 
-# 🏷️ Tagwerk
+# 🏷️ Retagger
 
 **A simple tag editor for your music files on Android. Single files or whole albums at once.**
 
-[![Build](https://github.com/aikitori/tagwerk/actions/workflows/android.yml/badge.svg)](https://github.com/aikitori/tagwerk/actions/workflows/android.yml)
-[![Release](https://img.shields.io/github/v/release/aikitori/tagwerk)](https://github.com/aikitori/tagwerk/releases/latest)
+[![Build](https://github.com/aikitori/retagger/actions/workflows/android.yml/badge.svg)](https://github.com/aikitori/retagger/actions/workflows/android.yml)
+[![Release](https://img.shields.io/github/v/release/aikitori/retagger)](https://github.com/aikitori/retagger/releases/latest)
 ![Android 8+](https://img.shields.io/badge/Android-8.0%2B-3ddc84)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 
-[**Download APK**](https://github.com/aikitori/tagwerk/releases/latest/download/tagwerk.apk)
+[**Download APK**](https://github.com/aikitori/retagger/releases/latest/download/retagger.apk)
 
 </div>
 

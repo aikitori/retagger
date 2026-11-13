@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk.core
+package de.aikitori.retagger.core
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
@@ -19,16 +19,16 @@ class TagIOTest {
 
     private val png = javaClass.getResourceAsStream("/cover.png")!!.readBytes()
 
-    // ID3v2.3 speichert das Jahr nur vierstellig
+    // ID3v2.3 stores the year with four digits only
     private fun value(field: Field, number: String, year: String) = when {
         field == Field.YEAR -> year
         field.numeric -> number
-        else -> "Wert ${field.name} äöü"
+        else -> "Value ${field.name} äöü"
     }
 
     @ParameterizedTest
     @ValueSource(strings = ["silence.mp3", "silence.flac"])
-    fun `schreibt und liest alle Felder samt Cover`(name: String) {
+    fun `writes and reads all fields and the cover`(name: String) {
         val file = copy(name)
         val tags = Field.entries.fold(Tags()) { tags, field ->
             tags.with(field, value(field, "07", "2024"))
@@ -45,7 +45,7 @@ class TagIOTest {
 
     @ParameterizedTest
     @ValueSource(strings = ["silence.mp3", "silence.flac"])
-    fun `leere Felder und Cover werden entfernt`(name: String) {
+    fun `empty fields and cover are removed`(name: String) {
         val file = copy(name)
         TagIO.write(file, Tags().with(Field.TITLE, "A").with(Field.ARTIST, "B").copy(artwork = Artwork(png, "image/png")))
         TagIO.write(file, Tags().with(Field.TITLE, "A"))
@@ -56,7 +56,7 @@ class TagIOTest {
     }
 
     @org.junit.jupiter.api.Test
-    fun `ungültige Tracknummer wird abgelehnt`() {
+    fun `rejects an invalid track number`() {
         val file = copy("silence.mp3")
         org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
             TagIO.write(file, Tags(mapOf(Field.TRACK to "eins")))
@@ -65,7 +65,7 @@ class TagIOTest {
 
     @ParameterizedTest
     @ValueSource(strings = ["silence.mp3", "silence.flac"])
-    fun `Cover klappt auch im Android-Modus`(name: String) {
+    fun `cover works in Android mode`(name: String) {
         val file = copy(name)
         val options = org.jaudiotagger.tag.TagOptionSingleton.getInstance()
         try {

@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk.ui
+package de.aikitori.retagger.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -41,9 +41,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import de.aikitori.tagwerk.R
-import de.aikitori.tagwerk.core.AudioInfo
-import de.aikitori.tagwerk.core.extension
+import de.aikitori.retagger.R
+import de.aikitori.retagger.core.AudioInfo
+import de.aikitori.retagger.core.extension
 
 private enum class Dialog { NONE, DISCARD, PARSE, RENAME }
 

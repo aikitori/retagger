@@ -14,16 +14,16 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "tagwerk"
+rootProject.name = "retagger"
 
 include(":core")
 
-// Die App braucht das Android-SDK. Ohne SDK lassen sich core und seine Tests trotzdem bauen.
+// The app needs the Android SDK. Without it, core and its tests still build.
 val hasAndroidSdk = System.getenv("ANDROID_HOME") != null ||
     System.getenv("ANDROID_SDK_ROOT") != null ||
     file("local.properties").exists()
 if (hasAndroidSdk) {
     include(":app")
 } else {
-    logger.lifecycle("Kein Android-SDK gefunden, Modul :app wird übersprungen")
+    logger.lifecycle("No Android SDK found, skipping module :app")
 }

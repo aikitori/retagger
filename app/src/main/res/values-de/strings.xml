@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="welcome_title">Tags deiner Musik bearbeiten</string>
-    <string name="welcome_text">Wähle einen Ordner mit Musikdateien. Tagwerk bekommt nur Zugriff auf diesen Ordner und seine Unterordner.</string>
+    <string name="welcome_text">Wähle einen Ordner mit Musikdateien. Retagger bekommt nur Zugriff auf diesen Ordner und seine Unterordner.</string>
     <string name="choose_folder">Musikordner wählen</string>
     <string name="change_folder">Ordner wechseln</string>
     <string name="empty_folder">Keine Musikdateien in diesem Ordner</string>

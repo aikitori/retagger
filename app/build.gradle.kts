@@ -5,19 +5,19 @@ plugins {
 }
 
 android {
-    namespace = "de.aikitori.tagwerk"
+    namespace = "de.aikitori.retagger"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "de.aikitori.tagwerk"
+        applicationId = "de.aikitori.retagger"
         minSdk = 26
         targetSdk = 36
-        // in der CI: -PversionCode=<Laufnummer> -PversionName=0.<Laufnummer>
+        // in CI: -PversionCode=<run number> -PversionName=0.<run number>
         versionCode = (findProperty("versionCode") as String?)?.toInt() ?: 1
         versionName = findProperty("versionName") as String? ?: "0.1.0"
     }
 
-    // fester Schlüssel aus den Repo-Secrets (scripts/keystore-einrichten.sh), damit Updates über die installierte App gehen
+    // fixed key from the repo secrets (scripts/setup-keystore.sh), so updates install over the existing app
     val keystore = System.getenv("ANDROID_KEYSTORE_PATH")
     signingConfigs {
         if (keystore != null) {

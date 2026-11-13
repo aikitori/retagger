@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk.core
+package de.aikitori.retagger.core
 
 sealed interface ArtworkChange {
     data object Keep : ArtworkChange
@@ -7,13 +7,13 @@ sealed interface ArtworkChange {
 }
 
 /**
- * Änderungen für mehrere Dateien auf einmal. In [fields] stehen nur die Felder, die geändert werden;
- * ein leerer Wert löscht das Feld.
+ * Changes for several files at once. [fields] holds only the fields to change;
+ * an empty value removes the field.
  */
 data class BatchEdit(
     val fields: Map<Field, String> = emptyMap(),
     val artwork: ArtworkChange = ArtworkChange.Keep,
-    /** Tracknummern 1..n in der Reihenfolge der Dateien vergeben und die Gesamtzahl setzen. */
+    /** Set track numbers 1..n in file order, plus the track total. */
     val numberTracks: Boolean = false,
 ) {
     fun apply(tags: Tags, index: Int, count: Int): Tags {
@@ -31,7 +31,7 @@ data class BatchEdit(
     val isEmpty get() = fields.isEmpty() && artwork == ArtworkChange.Keep && !numberTracks
 
     companion object {
-        /** Gemeinsamer Wert je Feld; null, wenn sich die Dateien unterscheiden. */
+        /** Shared value per field; null if the files differ. */
         fun commonValues(all: List<Tags>): Map<Field, String?> = Field.entries.associateWith { field ->
             all.map { it[field] }.distinct().singleOrNull()
         }

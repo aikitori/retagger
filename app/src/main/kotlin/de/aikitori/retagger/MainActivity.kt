@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk
+package de.aikitori.retagger
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,12 +9,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
-import de.aikitori.tagwerk.ui.AppViewModel
-import de.aikitori.tagwerk.ui.BatchScreen
-import de.aikitori.tagwerk.ui.EditorScreen
-import de.aikitori.tagwerk.ui.FolderScreen
-import de.aikitori.tagwerk.ui.Screen
-import de.aikitori.tagwerk.ui.TagwerkTheme
+import de.aikitori.retagger.ui.AppViewModel
+import de.aikitori.retagger.ui.BatchScreen
+import de.aikitori.retagger.ui.EditorScreen
+import de.aikitori.retagger.ui.FolderScreen
+import de.aikitori.retagger.ui.Screen
+import de.aikitori.retagger.ui.RetaggerTheme
 import kotlinx.coroutines.flow.filterNotNull
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TagwerkTheme {
+            RetaggerTheme {
                 val snackbar = remember { SnackbarHostState() }
                 LaunchedEffect(Unit) {
                     snapshotFlow { model.message }.filterNotNull().collect { text ->

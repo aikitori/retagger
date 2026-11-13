@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk.ui
+package de.aikitori.retagger.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -44,8 +44,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import de.aikitori.tagwerk.R
-import de.aikitori.tagwerk.data.Entry
+import de.aikitori.retagger.R
+import de.aikitori.retagger.data.Entry
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable

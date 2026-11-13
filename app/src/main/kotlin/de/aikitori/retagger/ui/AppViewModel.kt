@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk.ui
+package de.aikitori.retagger.ui
 
 import android.app.Application
 import android.content.Context
@@ -11,17 +11,17 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import de.aikitori.tagwerk.R
-import de.aikitori.tagwerk.core.Artwork
-import de.aikitori.tagwerk.core.ArtworkChange
-import de.aikitori.tagwerk.core.AudioInfo
-import de.aikitori.tagwerk.core.BatchEdit
-import de.aikitori.tagwerk.core.Field
-import de.aikitori.tagwerk.core.FilenamePattern
-import de.aikitori.tagwerk.core.Tags
-import de.aikitori.tagwerk.core.baseName
-import de.aikitori.tagwerk.data.Entry
-import de.aikitori.tagwerk.data.Library
+import de.aikitori.retagger.R
+import de.aikitori.retagger.core.Artwork
+import de.aikitori.retagger.core.ArtworkChange
+import de.aikitori.retagger.core.AudioInfo
+import de.aikitori.retagger.core.BatchEdit
+import de.aikitori.retagger.core.Field
+import de.aikitori.retagger.core.FilenamePattern
+import de.aikitori.retagger.core.Tags
+import de.aikitori.retagger.core.baseName
+import de.aikitori.retagger.data.Entry
+import de.aikitori.retagger.data.Library
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,7 +34,7 @@ sealed interface Screen {
 
 data class Folder(val documentId: String, val name: String)
 
-/** Eine Datei im Editor. Die Felder halten den Text, wie er getippt wird; bereinigt wird erst beim Speichern. */
+/** One file in the editor. Values hold the text as typed; it is cleaned up only on save. */
 data class EditorState(
     val entry: Entry,
     val original: Tags? = null,
@@ -48,7 +48,7 @@ data class EditorState(
     val valid get() = values.all { (field, value) -> Tags.isValid(field, value.trim()) }
 }
 
-/** Mehrere Dateien. [edits] enthält nur Felder, die die Person angefasst hat. */
+/** Several files. [edits] holds only the fields the user touched. */
 data class BatchState(
     val entries: List<Entry>,
     val tags: List<Tags?> = emptyList(),
@@ -68,7 +68,7 @@ data class BatchState(
 
 class AppViewModel(app: Application) : AndroidViewModel(app) {
     private val library = Library(app)
-    private val prefs = app.getSharedPreferences("tagwerk", Context.MODE_PRIVATE)
+    private val prefs = app.getSharedPreferences("retagger", Context.MODE_PRIVATE)
 
     var tree by mutableStateOf<Uri?>(null)
         private set
@@ -87,7 +87,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     var batch by mutableStateOf<BatchState?>(null)
         private set
 
-    /** Kurze Meldung für die Snackbar; die Oberfläche setzt sie nach dem Anzeigen zurück. */
+    /** Short message for the snackbar; the UI resets it once shown. */
     var message by mutableStateOf<String?>(null)
 
     var parsePattern by mutableStateOf(prefs.getString("parse_pattern", null) ?: FilenamePattern.DEFAULT)
@@ -108,7 +108,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun Throwable.text() = localizedMessage ?: javaClass.simpleName
 
-    // --- Ordner ---
+    // --- folder ---
 
     fun pickFolder(uri: Uri) {
         val resolver = getApplication<Application>().contentResolver
@@ -156,7 +156,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         refresh()
     }
 
-    /** Einen Ordner nach oben; false, wenn schon ganz oben. */
+    /** One folder up; false if already at the top. */
     fun up(): Boolean {
         if (path.size <= 1) return false
         path = path.dropLast(1)
@@ -194,7 +194,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         refresh()
     }
 
-    // --- eine Datei ---
+    // --- single file ---
 
     fun openEditor(entry: Entry) {
         editor = EditorState(entry)
@@ -283,7 +283,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    // --- mehrere Dateien ---
+    // --- several files ---
 
     fun openBatch(files: List<Entry>) {
         batch = BatchState(files, progress = 0 to files.size)
@@ -341,7 +341,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /** Arbeitet die Dateien nacheinander ab, zeigt den Fortschritt und meldet Fehler gesammelt. */
+    /** Processes the files one by one, shows progress and reports failures together. */
     private fun runOnFiles(
         state: BatchState,
         done: () -> Unit = {},

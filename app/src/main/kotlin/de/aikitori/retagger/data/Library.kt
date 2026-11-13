@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk.data
+package de.aikitori.retagger.data
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -6,17 +6,17 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.DocumentsContract
 import android.provider.DocumentsContract.Document
-import de.aikitori.tagwerk.core.Artwork
-import de.aikitori.tagwerk.core.AudioFileTags
-import de.aikitori.tagwerk.core.NaturalOrder
-import de.aikitori.tagwerk.core.TagIO
-import de.aikitori.tagwerk.core.Tags
-import de.aikitori.tagwerk.core.extension
+import de.aikitori.retagger.core.Artwork
+import de.aikitori.retagger.core.AudioFileTags
+import de.aikitori.retagger.core.NaturalOrder
+import de.aikitori.retagger.core.TagIO
+import de.aikitori.retagger.core.Tags
+import de.aikitori.retagger.core.extension
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 
-/** Eintrag in einem Ordner, den die Person per Storage Access Framework freigegeben hat. */
+/** Entry in a folder the user granted via the Storage Access Framework. */
 data class Entry(
     val documentId: String,
     val uri: Uri,
@@ -25,8 +25,8 @@ data class Entry(
 )
 
 /**
- * Zugriff auf den freigegebenen Musikordner. jaudiotagger braucht eine echte Datei, deshalb wird jede
- * Musikdatei zum Lesen und Schreiben in den Cache kopiert und nach dem Schreiben zurückgespielt.
+ * Access to the granted music folder. jaudiotagger needs a real file, so each music file is
+ * copied to the cache for reading and writing, and copied back after writing.
  */
 class Library(private val context: Context) {
     private val resolver get() = context.contentResolver
@@ -46,7 +46,7 @@ class Library(private val context: Context) {
         return documentId.substringAfterLast(':').substringAfterLast('/')
     }
 
-    /** Unterordner und Musikdateien, Ordner zuerst, jeweils nach Namen sortiert. */
+    /** Subfolders and music files, folders first, each sorted by name. */
     fun list(tree: Uri, documentId: String): List<Entry> {
         val children = DocumentsContract.buildChildDocumentsUriUsingTree(tree, documentId)
         val columns = arrayOf(Document.COLUMN_DOCUMENT_ID, Document.COLUMN_DISPLAY_NAME, Document.COLUMN_MIME_TYPE)
@@ -69,13 +69,13 @@ class Library(private val context: Context) {
     fun write(entry: Entry, tags: Tags) {
         withCopy(entry) { file ->
             TagIO.write(file, tags)
-            // "wt" kürzt die Datei, sonst bliebe bei kleineren Tags Müll am Ende stehen
+            // "wt" truncates, otherwise smaller tags would leave junk at the end
             val output = resolver.openOutputStream(entry.uri, "wt") ?: throw FileNotFoundException(entry.name)
             output.use { out -> file.inputStream().use { it.copyTo(out) } }
         }
     }
 
-    /** Benennt die Datei um; die Endung bleibt. Gibt den neuen Eintrag zurück. */
+    /** Renames the file, keeping the extension. Returns the new entry. */
     fun rename(entry: Entry, tree: Uri, baseName: String): Entry {
         val newName = "$baseName.${entry.name.extension()}"
         if (newName == entry.name) return entry
@@ -85,7 +85,7 @@ class Library(private val context: Context) {
     }
 
     private fun <T> withCopy(entry: Entry, block: (File) -> T): T {
-        // jaudiotagger erkennt das Format an der Endung
+        // jaudiotagger detects the format by extension
         val file = File.createTempFile("tag", "." + entry.name.extension().lowercase(), workDir)
         try {
             val input = resolver.openInputStream(entry.uri) ?: throw FileNotFoundException(entry.name)
@@ -96,7 +96,7 @@ class Library(private val context: Context) {
         }
     }
 
-    /** Lädt ein Bild als Cover, große Bilder werden auf höchstens [maxSize] Pixel verkleinert. */
+    /** Loads an image as cover; large images are scaled down to at most [maxSize] pixels. */
     fun loadCover(uri: Uri, maxSize: Int = 1000): Artwork {
         val bytes = resolver.openInputStream(uri)?.use { it.readBytes() } ?: throw FileNotFoundException(uri.toString())
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
@@ -105,7 +105,7 @@ class Library(private val context: Context) {
         if (bounds.outWidth <= maxSize && bounds.outHeight <= maxSize && (mime == "image/jpeg" || mime == "image/png")) {
             return Artwork(bytes, mime)
         }
-        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: throw IllegalArgumentException("Kein Bild")
+        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: throw IllegalArgumentException("Not an image")
         val scale = minOf(1f, maxSize.toFloat() / maxOf(bitmap.width, bitmap.height))
         val scaled = Bitmap.createScaledBitmap(bitmap, (bitmap.width * scale).toInt(), (bitmap.height * scale).toInt(), true)
         val out = ByteArrayOutputStream()
@@ -113,7 +113,7 @@ class Library(private val context: Context) {
         return Artwork(out.toByteArray(), "image/jpeg")
     }
 
-    /** Reste abgebrochener Bearbeitungen entfernen. */
+    /** Removes leftovers from interrupted edits. */
     fun cleanUp() {
         workDir.listFiles()?.forEach { it.delete() }
     }

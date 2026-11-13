@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk.ui
+package de.aikitori.retagger.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -44,10 +44,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import de.aikitori.tagwerk.R
-import de.aikitori.tagwerk.core.ArtworkChange
-import de.aikitori.tagwerk.core.Field
-import de.aikitori.tagwerk.core.extension
+import de.aikitori.retagger.R
+import de.aikitori.retagger.core.ArtworkChange
+import de.aikitori.retagger.core.Field
+import de.aikitori.retagger.core.extension
 
 private enum class BatchDialog { NONE, DISCARD, PARSE, RENAME }
 

@@ -1,4 +1,4 @@
-package de.aikitori.tagwerk.core
+package de.aikitori.retagger.core
 
 import org.jaudiotagger.audio.AudioFileIO
 import org.jaudiotagger.audio.mp3.MP3File
@@ -9,9 +9,9 @@ import java.io.File
 import java.util.logging.Level
 import java.util.logging.Logger
 
-/** Liest und schreibt Tags über jaudiotagger. Die Datei braucht die passende Endung. */
+/** Reads and writes tags via jaudiotagger. The file needs the right extension. */
 object TagIO {
-    /** Dateiendungen, die jaudiotagger bearbeiten kann. */
+    /** File extensions jaudiotagger can handle. */
     val EXTENSIONS = setOf("mp3", "flac", "ogg", "oga", "m4a", "m4b", "mp4", "wma", "wav", "aif", "aiff", "aifc", "dsf")
 
     private val fieldKeys = mapOf(
@@ -29,10 +29,10 @@ object TagIO {
         Field.COMMENT to FieldKey.COMMENT,
     )
 
-    // jaudiotagger loggt jede Kleinigkeit auf INFO/WARNING
+    // jaudiotagger logs every little thing at INFO/WARNING
     private val quiet = Logger.getLogger("org.jaudiotagger").apply { level = Level.OFF }
 
-    /** Auf Android einschalten, sonst greift jaudiotagger für Cover auf javax.imageio zu. */
+    /** Enable on Android, otherwise jaudiotagger uses javax.imageio for artwork. */
     fun useAndroidMode() {
         TagOptionSingleton.getInstance().isAndroid = true
     }
@@ -65,7 +65,7 @@ object TagIO {
 
     fun write(file: File, tags: Tags) {
         val invalid = tags.invalidFields()
-        require(invalid.isEmpty()) { "Ungültige Werte: $invalid" }
+        require(invalid.isEmpty()) { "Invalid values: $invalid" }
         val audio = AudioFileIO.read(file)
         val tag = audio.tagOrCreateAndSetDefault
         for ((field, key) in fieldKeys) {
@@ -80,7 +80,7 @@ object TagIO {
         tags.artwork?.let { art ->
             tag.setField(SizedArtwork(art.data, art.mimeType))
         }
-        // ein vorhandenes ID3v1-Tag nachziehen, sonst zeigen alte Player die alten Werte
+        // update an existing ID3v1 tag too, otherwise old players show the old values
         if (audio is MP3File && audio.hasID3v1Tag() && audio.hasID3v2Tag()) {
             audio.iD3v1Tag = ID3v11Tag(audio.iD3v2Tag)
         }
