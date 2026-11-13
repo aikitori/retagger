@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_title">Tags deiner Musik bearbeiten</string>
+    <string name="welcome_text">Wähle einen Ordner mit Musikdateien. Tagwerk bekommt nur Zugriff auf diesen Ordner und seine Unterordner.</string>
+    <string name="choose_folder">Musikordner wählen</string>
+    <string name="change_folder">Ordner wechseln</string>
+    <string name="empty_folder">Keine Musikdateien in diesem Ordner</string>
+    <string name="up">Nach oben</string>
+    <string name="select_all">Alle auswählen</string>
+    <string name="edit_selected">Auswahl bearbeiten</string>
+    <string name="selected_count">%1$d ausgewählt</string>
+    <string name="clear_selection">Auswahl aufheben</string>
+
+    <string name="cancel">Abbrechen</string>
+    <string name="save">Speichern</string>
+    <string name="apply">Übernehmen</string>
+    <string name="discard">Verwerfen</string>
+    <string name="back">Zurück</string>
+    <string name="more">Mehr</string>
+    <string name="loading">Wird geladen…</string>
+    <string name="discard_title">Änderungen verwerfen?</string>
+    <string name="discard_text">Deine Änderungen sind noch nicht gespeichert.</string>
+    <string name="saved">Gespeichert</string>
+    <string name="error_read">%1$s ließ sich nicht lesen: %2$s</string>
+    <string name="error_write">%1$s ließ sich nicht speichern: %2$s</string>
+    <string name="error_rename">%1$s ließ sich nicht umbenennen: %2$s</string>
+    <string name="error_folder">Der Ordner ließ sich nicht öffnen: %1$s</string>
+    <string name="invalid_number">Nur Ziffern</string>
+
+    <string name="field_title">Titel</string>
+    <string name="field_artist">Interpret</string>
+    <string name="field_album">Album</string>
+    <string name="field_album_artist">Album-Interpret</string>
+    <string name="field_year">Jahr</string>
+    <string name="field_track">Track</string>
+    <string name="field_track_total">von</string>
+    <string name="field_disc">CD</string>
+    <string name="field_disc_total">von</string>
+    <string name="field_genre">Genre</string>
+    <string name="field_composer">Komponist</string>
+    <string name="field_comment">Kommentar</string>
+
+    <string name="cover">Cover</string>
+    <string name="cover_change">Cover wählen</string>
+    <string name="cover_remove">Cover entfernen</string>
+    <string name="cover_keep">Cover behalten</string>
+    <string name="cover_various">Unterschiedliche Cover</string>
+    <string name="no_cover">Kein Cover</string>
+
+    <string name="tags_from_filename">Tags aus Dateiname</string>
+    <string name="tags_from_filenames">Tags aus Dateinamen</string>
+    <string name="rename_file">Datei umbenennen</string>
+    <string name="rename_files">Dateien umbenennen</string>
+    <string name="pattern">Muster</string>
+    <string name="pattern_help" formatted="false">Platzhalter: %title% %artist% %album% %albumartist% %year% %track% %tracktotal% %disc% %genre% %composer%</string>
+    <string name="no_match">Passt nicht zum Muster</string>
+    <string name="matches_count">%1$d von %2$d Dateinamen passen</string>
+
+    <string name="batch_title">%1$d Dateien</string>
+    <string name="various">(verschieden)</string>
+    <string name="batch_hint">Geschrieben werden nur Felder, die du änderst. Ein leeres Feld entfernt den Wert aus allen Dateien.</string>
+    <string name="number_tracks">Tracks 1–%1$d nach Dateinamen durchnummerieren</string>
+    <string name="progress">Bearbeite %1$d von %2$d…</string>
+    <string name="batch_done">%1$d Dateien fertig</string>
+    <string name="batch_errors">%1$d Dateien fertig, %2$d fehlgeschlagen</string>
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Tagwerk</string>
+
+    <string name="welcome_title">Edit the tags of your music</string>
+    <string name="welcome_text">Pick a folder with music files. Tagwerk only gets access to that folder and its subfolders.</string>
+    <string name="choose_folder">Choose music folder</string>
+    <string name="change_folder">Change folder</string>
+    <string name="empty_folder">No music files in this folder</string>
+    <string name="up">Up</string>
+    <string name="select_all">Select all</string>
+    <string name="edit_selected">Edit selected</string>
+    <string name="selected_count">%1$d selected</string>
+    <string name="clear_selection">Clear selection</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="apply">Apply</string>
+    <string name="discard">Discard</string>
+    <string name="back">Back</string>
+    <string name="more">More</string>
+    <string name="loading">Loading…</string>
+    <string name="discard_title">Discard changes?</string>
+    <string name="discard_text">Your changes are not saved yet.</string>
+    <string name="saved">Saved</string>
+    <string name="error_read">Could not read %1$s: %2$s</string>
+    <string name="error_write">Could not save %1$s: %2$s</string>
+    <string name="error_rename">Could not rename %1$s: %2$s</string>
+    <string name="error_folder">Could not open the folder: %1$s</string>
+    <string name="invalid_number">Numbers only</string>
+
+    <string name="field_title">Title</string>
+    <string name="field_artist">Artist</string>
+    <string name="field_album">Album</string>
+    <string name="field_album_artist">Album artist</string>
+    <string name="field_year">Year</string>
+    <string name="field_track">Track</string>
+    <string name="field_track_total">of</string>
+    <string name="field_disc">Disc</string>
+    <string name="field_disc_total">of</string>
+    <string name="field_genre">Genre</string>
+    <string name="field_composer">Composer</string>
+    <string name="field_comment">Comment</string>
+
+    <string name="cover">Cover</string>
+    <string name="cover_change">Choose cover</string>
+    <string name="cover_remove">Remove cover</string>
+    <string name="cover_keep">Keep covers</string>
+    <string name="cover_various">Different covers</string>
+    <string name="no_cover">No cover</string>
+
+    <string name="tags_from_filename">Tags from filename</string>
+    <string name="tags_from_filenames">Tags from filenames</string>
+    <string name="rename_file">Rename file</string>
+    <string name="rename_files">Rename files</string>
+    <string name="pattern">Pattern</string>
+    <string name="pattern_help" formatted="false">Placeholders: %title% %artist% %album% %albumartist% %year% %track% %tracktotal% %disc% %genre% %composer%</string>
+    <string name="no_match">Does not match the pattern</string>
+    <string name="matches_count">%1$d of %2$d file names match</string>
+
+    <string name="batch_title">%1$d files</string>
+    <string name="various">(various)</string>
+    <string name="batch_hint">Only fields you change are written. Leave a field empty to remove it from all files.</string>
+    <string name="number_tracks">Number tracks 1–%1$d in file name order</string>
+    <string name="progress">Working on %1$d of %2$d…</string>
+    <string name="batch_done">%1$d files done</string>
+    <string name="batch_errors">%1$d files done, %2$d failed</string>
+</resources>

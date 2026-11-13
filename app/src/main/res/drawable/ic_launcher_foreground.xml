@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="2.2"
+        android:scaleY="2.2"
+        android:translateX="27.6"
+        android:translateY="27.6">
+        <!-- Etikett -->
+        <path
+            android:fillColor="#F4E9D8"
+            android:pathData="M3,5.5C3,4.67 3.67,4 4.5,4H14l7,8 -7,8H4.5C3.67,20 3,19.33 3,18.5Z" />
+        <!-- Note -->
+        <path
+            android:fillColor="#2E5E4E"
+            android:pathData="M10,7v6.3c-0.4,-0.2 -0.8,-0.3 -1.25,-0.3 -1.38,0 -2.5,1.12 -2.5,2.5s1.12,2.5 2.5,2.5 2.5,-1.12 2.5,-2.5V9.5h2.5V7z" />
+    </group>
+</vector>

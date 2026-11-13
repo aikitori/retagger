@@ -1,0 +1,53 @@
+<div align="center">
+
+# 🏷️ Tagwerk
+
+**A simple tag editor for your music files on Android. Single files or whole albums at once.**
+
+[![Build](https://github.com/aikitori/tagwerk/actions/workflows/android.yml/badge.svg)](https://github.com/aikitori/tagwerk/actions/workflows/android.yml)
+[![Release](https://img.shields.io/github/v/release/aikitori/tagwerk)](https://github.com/aikitori/tagwerk/releases/latest)
+![Android 8+](https://img.shields.io/badge/Android-8.0%2B-3ddc84)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
+
+[**Download APK**](https://github.com/aikitori/tagwerk/releases/latest/download/tagwerk.apk)
+
+</div>
+
+## Features
+
+- **All common formats:** MP3 (ID3v1/v2), FLAC, Ogg Vorbis, M4A/M4B, WMA, WAV, AIFF, DSF.
+- **Edit one file:** title, artist, album, album artist, year, track/total, disc/total, genre, composer, comment and cover.
+- **Edit many files:** select an album and set the shared fields once. Fields you don't touch stay as they are.
+- **Number tracks:** 1 to n in file name order, total included.
+- **Tags from file names:** `%track% - %artist% - %title%` turns `03 - Band - Song.mp3` into tags, with a live preview.
+- **Rename files from tags:** the same patterns the other way round.
+- **Covers:** pick any image from the gallery, large images are scaled down to 1000 px.
+- **Only the folder you choose:** access through Android's folder picker, no storage permission needed.
+- English and German.
+
+## Usage
+
+1. Tap **Choose music folder** and pick the folder with your music.
+2. Tap a file to edit it, or long-press to select several and tap **Edit selected**.
+3. More actions (tags from file name, rename) are in the ⋮ menu.
+
+Placeholders: `%title%` `%artist%` `%album%` `%albumartist%` `%year%` `%track%` `%tracktotal%` `%disc%` `%disctotal%` `%genre%` `%composer%`.
+Track and disc numbers are written with two digits when renaming; underscores in file names become spaces.
+
+## Development
+
+```
+core/   tag reading/writing (jaudiotagger), file name patterns, batch logic. Plain JVM, unit tested
+app/    Android app (Kotlin, Jetpack Compose), folder access via the Storage Access Framework
+```
+
+```sh
+./gradlew :core:test            # works without the Android SDK
+./gradlew :app:assembleDebug    # needs the Android SDK
+```
+
+Every push to `main` builds a signed APK and publishes it as a GitHub release.
+
+## License
+
+MIT. Tag handling by [jaudiotagger](https://bitbucket.org/ijabz/jaudiotagger) (LGPL).
