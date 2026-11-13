@@ -83,4 +83,5 @@
     <string name="convert_done">%1$d files converted</string>
     <string name="convert_errors">%1$d converted, %2$d failed: %3$s</string>
     <string name="convert_cancelled">Cancelled after %1$d files</string>
+    <string name="notification_channel">MP3 conversion</string>
 </resources>

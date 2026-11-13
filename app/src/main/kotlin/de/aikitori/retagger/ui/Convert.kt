@@ -1,5 +1,9 @@
 package de.aikitori.retagger.ui
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,19 +19,18 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import de.aikitori.retagger.R
+import de.aikitori.retagger.convert.ConversionState
 import de.aikitori.retagger.convert.Mp3Quality
 import de.aikitori.retagger.data.Entry
 
@@ -47,6 +50,10 @@ private fun Mp3Quality.label() = stringResource(
 fun ConvertDialog(model: AppViewModel, files: List<Entry>, onDismiss: () -> Unit) {
     var quality by rememberSaveable { mutableStateOf(model.mp3Quality) }
     var delete by rememberSaveable { mutableStateOf(model.deleteOriginals) }
+    // for the progress notification; the conversion runs either way
+    val notifications = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+        model.convert(files, quality, delete)
+    }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -80,21 +87,20 @@ fun ConvertDialog(model: AppViewModel, files: List<Entry>, onDismiss: () -> Unit
         confirmButton = {
             TextButton(onClick = {
                 onDismiss()
-                model.convert(files, quality, delete)
+                if (Build.VERSION.SDK_INT >= 33) {
+                    notifications.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    model.convert(files, quality, delete)
+                }
             }) { Text(stringResource(R.string.convert_start)) }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
     )
 }
 
-/** Progress while converting; keeps the screen on so the phone doesn't pause the work. */
+/** Progress while converting. The work runs in a foreground service, the app may go to the background. */
 @Composable
 fun ConversionProgress(state: ConversionState, onCancel: () -> Unit) {
-    val view = LocalView.current
-    DisposableEffect(Unit) {
-        view.keepScreenOn = true
-        onDispose { view.keepScreenOn = false }
-    }
     AlertDialog(
         onDismissRequest = {},
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),

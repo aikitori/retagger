@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,12 +22,15 @@ import de.aikitori.retagger.core.FilenamePattern
 import de.aikitori.retagger.core.Suggestions
 import de.aikitori.retagger.core.Tags
 import de.aikitori.retagger.core.baseName
+import de.aikitori.retagger.convert.ConversionRequest
+import de.aikitori.retagger.convert.ConversionResult
+import de.aikitori.retagger.convert.ConversionService
+import de.aikitori.retagger.convert.ConversionState
 import de.aikitori.retagger.convert.Mp3Quality
 import de.aikitori.retagger.data.Entry
 import de.aikitori.retagger.data.Library
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import java.util.concurrent.CancellationException
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -38,9 +42,6 @@ sealed interface Screen {
 
 data class Folder(val documentId: String, val name: String)
 
-data class ConversionState(val total: Int, val index: Int = 0, val name: String = "", val fileProgress: Float = 0f) {
-    val overall get() = (index + fileProgress) / total
-}
 
 /** One file in the editor. Values hold the text as typed; it is cleaned up only on save. */
 data class EditorState(
@@ -98,9 +99,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     /** Short message for the snackbar; the UI resets it once shown. */
     var message by mutableStateOf<String?>(null)
 
-    var conversion by mutableStateOf<ConversionState?>(null)
-        private set
-    private var conversionJob: Job? = null
+    /** Runs in [ConversionService], so it survives the app going to the background. */
+    val conversion: ConversionState? get() = ConversionService.state
 
     var mp3Quality by mutableStateOf(
         runCatching { Mp3Quality.valueOf(prefs.getString("mp3_quality", null)!!) }.getOrDefault(Mp3Quality.VBR_V2),
@@ -116,6 +116,12 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         library.cleanUp()
+        viewModelScope.launch {
+            snapshotFlow { ConversionService.result }.filterNotNull().collect { result ->
+                ConversionService.result = null
+                conversionFinished(result)
+            }
+        }
         val saved = prefs.getString("tree", null)?.let(Uri::parse)
         val granted = app.contentResolver.persistedUriPermissions.any { it.uri == saved && it.isWritePermission }
         if (saved != null && granted) open(saved)
@@ -318,48 +324,24 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun convert(files: List<Entry>, quality: Mp3Quality, deleteOriginals: Boolean) {
         val tree = tree ?: return
         val folder = path.lastOrNull() ?: return
-        if (files.isEmpty() || conversion != null) return
         mp3Quality = quality
         this.deleteOriginals = deleteOriginals
         prefs.edit {
             putString("mp3_quality", quality.name)
             putBoolean("delete_originals", deleteOriginals)
         }
-        conversion = ConversionState(files.size)
-        conversionJob = viewModelScope.launch {
-            var done = 0
-            val errors = mutableListOf<String>()
-            for ((i, entry) in files.withIndex()) {
-                conversion = ConversionState(files.size, i, entry.name)
-                val job = coroutineContext[Job]
-                val result = runCatching {
-                    withContext(Dispatchers.IO) {
-                        library.convertToMp3(
-                            entry, tree, folder.documentId, quality, deleteOriginals,
-                            progress = { p -> conversion = conversion?.copy(fileProgress = p) },
-                            cancelled = { job?.isActive == false },
-                        )
-                    }
-                }
-                if (result.exceptionOrNull() is CancellationException) break
-                result.onSuccess { done++ }.onFailure { errors += "${entry.name}: ${it.text()}" }
-            }
-            val cancelled = conversionJob?.isCancelled == true
-            conversion = null
-            conversionJob = null
-            when {
-                cancelled -> say(R.string.convert_cancelled, done)
-                errors.isEmpty() -> say(R.string.convert_done, done)
-                else -> say(R.string.convert_errors, done, errors.size, errors.first())
-            }
-            // the file list changed, and the edited file may be gone
-            if (screen == Screen.Batch || (deleteOriginals && screen == Screen.Editor)) backToFolder() else refresh()
-            selection = emptySet()
-        }
+        ConversionService.start(getApplication(), ConversionRequest(tree, folder.documentId, files, quality, deleteOriginals))
     }
 
     fun cancelConversion() {
-        conversionJob?.cancel()
+        ConversionService.cancel(getApplication())
+    }
+
+    private fun conversionFinished(result: ConversionResult) {
+        message = result.message
+        // the file list changed, and the edited file may be gone
+        if (screen == Screen.Batch || (result.deletedOriginals && screen == Screen.Editor)) backToFolder() else refresh()
+        selection = emptySet()
     }
 
     // --- several files ---
