@@ -11,7 +11,8 @@
 
 ## Open / ideas
 
-- [ ] Test on a phone: MP3, FLAC, M4A, OGG; large folder; SD card
+- [x] Tested on a phone: MP3 (incl. files without valid audio header), fragmented M4A
+- [ ] Test on a phone: FLAC, OGG; large folder; SD card
 - [ ] Screenshots for the README
 - [ ] Opus (not supported by jaudiotagger, would need another library)
 - [ ] More fields (lyrics, BPM, compilation)
