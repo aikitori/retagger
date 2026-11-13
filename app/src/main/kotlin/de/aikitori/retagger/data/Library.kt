@@ -10,6 +10,7 @@ import android.provider.DocumentsContract
 import android.provider.DocumentsContract.Document
 import de.aikitori.retagger.core.Artwork
 import de.aikitori.retagger.core.AudioFileTags
+import de.aikitori.retagger.core.ContentType
 import de.aikitori.retagger.core.NaturalOrder
 import de.aikitori.retagger.core.TagIO
 import de.aikitori.retagger.core.Tags
@@ -71,21 +72,46 @@ class Library(private val context: Context) {
         return entries.sortedWith(compareBy<Entry> { !it.isDirectory }.then(NaturalOrder.by { it.name }))
     }
 
-    fun read(entry: Entry): AudioFileTags = withCopy(entry) { file -> TagIO.read(file) }
+    fun read(entry: Entry): AudioFileTags = withCopy(entry) { file ->
+        // only the copy is repaired here, the file itself when it is written
+        ContentType.repair(file)
+        TagIO.read(file)
+    }
 
     fun write(entry: Entry, tags: Tags) {
         withCopy(entry) { file ->
             TagIO.write(file, tags)
-            // "wt" truncates, otherwise smaller tags would leave junk at the end
-            val output = resolver.openOutputStream(entry.uri, "wt") ?: throw FileNotFoundException(entry.name)
-            output.use { out -> file.inputStream().use { it.copyTo(out) } }
+            writeBack(entry, file)
         }
         rescan(entry.documentId)
     }
 
+    private fun writeBack(entry: Entry, file: File) {
+        // "wt" truncates, otherwise smaller tags would leave junk at the end
+        val output = resolver.openOutputStream(entry.uri, "wt") ?: throw FileNotFoundException(entry.name)
+        output.use { out -> file.inputStream().use { it.copyTo(out) } }
+    }
+
+    /**
+     * Gives a file the extension that fits its content (e.g. M4A audio named ".mp3") and removes
+     * tags that don't belong to that format. Returns the entry unchanged if nothing was wrong.
+     */
+    fun fixFile(entry: Entry, tree: Uri): Entry {
+        val type = withCopy(entry) { file ->
+            if (ContentType.repair(file)) {
+                writeBack(entry, file)
+                rescan(entry.documentId)
+            }
+            ContentType.detect(file)
+        }
+        if (type == null || ContentType.matches(type, entry.name.extension())) return entry
+        return renameTo(entry, tree, "${entry.name.baseName()}.$type")
+    }
+
     /** Renames the file, keeping the extension. Returns the new entry. */
-    fun rename(entry: Entry, tree: Uri, baseName: String): Entry {
-        val newName = "$baseName.${entry.name.extension()}"
+    fun rename(entry: Entry, tree: Uri, baseName: String): Entry = renameTo(entry, tree, "$baseName.${entry.name.extension()}")
+
+    private fun renameTo(entry: Entry, tree: Uri, newName: String): Entry {
         if (newName == entry.name) return entry
         val uri = DocumentsContract.renameDocument(resolver, entry.uri, newName) ?: entry.uri
         val id = DocumentsContract.getDocumentId(uri)

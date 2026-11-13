@@ -82,4 +82,7 @@
     <string name="convert_errors">%1$d umgewandelt, %2$d fehlgeschlagen: %3$s</string>
     <string name="convert_cancelled">Abgebrochen nach %1$d Dateien</string>
     <string name="notification_channel">MP3-Umwandlung</string>
+    <string name="wrong_extension">Diese Datei ist eigentlich %1$s, heißt aber .%2$s. Manche Player können sie deshalb nicht lesen.</string>
+    <string name="fix_extension">In .%1$s umbenennen</string>
+    <string name="fix_extensions">Dateiendungen korrigieren</string>
 </resources>

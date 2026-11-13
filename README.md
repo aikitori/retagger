@@ -23,6 +23,7 @@
 - **Tags from file names:** `%track% - %artist% - %title%` turns `03 - Band - Song.mp3` into tags, with a live preview.
 - **Rename files from tags:** the same patterns the other way round.
 - **Convert to MP3:** M4A, FLAC, OGG, WAV and more, one file or a whole selection. VBR or CBR, tags and cover are copied, originals can be deleted afterwards.
+- **Wrong extensions:** detects e.g. M4A audio saved as `.mp3`, tags it correctly and renames it on request.
 - **Covers:** pick any image from the gallery, large images are scaled down to 1000 px.
 - **Only the folder you choose:** access through Android's folder picker, no storage permission needed.
 - English and German.

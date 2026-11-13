@@ -95,6 +95,10 @@ fun BatchScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                             menu = false
                             dialog = BatchDialog.RENAME
                         })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.fix_extensions)) }, enabled = !state.dirty, onClick = {
+                            menu = false
+                            model.fixExtensions()
+                        })
                         if (state.entries.any { !it.name.endsWith(".mp3", ignoreCase = true) }) {
                             DropdownMenuItem(text = { Text(stringResource(R.string.convert_to_mp3)) }, enabled = !state.dirty, onClick = {
                                 menu = false

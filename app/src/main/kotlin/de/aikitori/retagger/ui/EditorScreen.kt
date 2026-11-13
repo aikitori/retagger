@@ -17,6 +17,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -115,6 +118,16 @@ fun EditorScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                     }
                 }
                 val suggestions = remember(state.entry.name) { model.suggestions(state.entry) }
+                state.actualType?.let { actual ->
+                    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
+                        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(stringResource(R.string.wrong_extension, actual.uppercase(), state.entry.name.extension()))
+                            Button(onClick = model::fixExtension, enabled = !state.busy) {
+                                Text(stringResource(R.string.fix_extension, actual))
+                            }
+                        }
+                    }
+                }
                 FieldList { field, modifier ->
                     TagField(
                         field = field,

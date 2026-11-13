@@ -44,11 +44,16 @@ object TagIO {
 
     fun isSupported(name: String) = name.substringAfterLast('.', "").lowercase() in EXTENSIONS
 
+    /**
+     * Reads the tags. Files whose extension doesn't fit their content (M4A saved as ".mp3") are read
+     * by content; run [ContentType.repair] first if such a file may carry a wrongly added ID3 tag.
+     */
     fun read(file: File): AudioFileTags {
+        val type = ContentType.detect(file)
         val audio = try {
-            AudioFileIO.read(file)
+            open(file, type)
         } catch (e: Exception) {
-            if (!isMp3(file)) throw e
+            if (!rawMp3(file, type)) throw e
             null
         }
         val tag = if (audio != null) audio.tag else RawId3.read(file).tag
@@ -71,16 +76,20 @@ object TagIO {
             seconds = header?.trackLength ?: 0,
             bitrateKbps = header?.bitRate.orEmpty(),
         )
-        return AudioFileTags(Tags(fields, artwork), info)
+        val actual = type?.takeIf { !ContentType.matches(it, file.extension) }
+        return AudioFileTags(Tags(fields, artwork), info, actual)
     }
 
     fun write(file: File, tags: Tags) {
         val invalid = tags.invalidFields()
         require(invalid.isEmpty()) { "Invalid values: $invalid" }
+        // never put an MP3 tag in front of e.g. M4A audio named ".mp3"; remove one if it is already there
+        ContentType.repair(file)
+        val type = ContentType.detect(file)
         val audio = try {
-            AudioFileIO.read(file)
+            open(file, type)
         } catch (e: Exception) {
-            if (!isMp3(file)) throw e
+            if (!rawMp3(file, type)) throw e
             null
         }
         if (audio == null) {
@@ -125,7 +134,12 @@ object TagIO {
         }
     }
 
-    private fun isMp3(file: File) = file.extension.equals("mp3", ignoreCase = true)
+    private fun open(file: File, type: String?) =
+        if (type != null && !ContentType.matches(type, file.extension)) AudioFileIO.readAs(file, type) else AudioFileIO.read(file)
+
+    /** Only real MPEG audio may fall back to editing the ID3 tag directly. */
+    private fun rawMp3(file: File, type: String?) =
+        file.extension.equals("mp3", ignoreCase = true) && (type == null || type == "mp3")
 
     fun guessMime(data: ByteArray): String = when {
         data.size > 3 && data[0] == 0x89.toByte() && data[1] == 'P'.code.toByte() -> "image/png"

@@ -51,6 +51,8 @@ data class EditorState(
     val values: Map<Field, String> = emptyMap(),
     val artwork: Artwork? = null,
     val busy: Boolean = true,
+    /** Real format if the extension is wrong, e.g. "m4a" for a file named ".mp3". */
+    val actualType: String? = null,
 ) {
     val tags get() = Tags().with(values).copy(artwork = artwork)
     val dirty get() = original != null && tags != original
@@ -227,7 +229,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             runCatching { withContext(Dispatchers.IO) { library.read(entry) } }
                 .onSuccess { read ->
-                    editor = EditorState(entry, read.tags, read.info, read.tags.fields, read.tags.artwork, busy = false)
+                    editor = EditorState(entry, read.tags, read.info, read.tags.fields, read.tags.artwork, busy = false, actualType = read.actualType)
                 }
                 .onFailure {
                     say(R.string.error_read, entry.name, it.text())
@@ -342,6 +344,26 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         // the file list changed, and the edited file may be gone
         if (screen == Screen.Batch || (result.deletedOriginals && screen == Screen.Editor)) backToFolder() else refresh()
         selection = emptySet()
+    }
+
+    fun fixExtension() {
+        val tree = tree ?: return
+        val state = editor?.takeIf { !it.busy } ?: return
+        editor = state.copy(busy = true)
+        viewModelScope.launch {
+            runCatching { withContext(Dispatchers.IO) { library.fixFile(state.entry, tree) } }
+                .onSuccess { fixed -> editor = editor?.copy(entry = fixed, actualType = null, busy = false) }
+                .onFailure {
+                    editor = editor?.copy(busy = false)
+                    say(R.string.error_rename, state.entry.name, it.text())
+                }
+        }
+    }
+
+    fun fixExtensions() {
+        val tree = tree ?: return
+        val state = batch?.takeIf { it.loaded && it.progress == null } ?: return
+        runOnFiles(state) { _, entry, tags -> library.fixFile(entry, tree) to tags }
     }
 
     // --- several files ---

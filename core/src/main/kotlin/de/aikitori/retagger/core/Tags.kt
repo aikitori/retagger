@@ -53,4 +53,5 @@ data class Tags(val fields: Map<Field, String> = emptyMap(), val artwork: Artwor
 /** Technical details of the file, for display only. */
 data class AudioInfo(val format: String, val seconds: Int, val bitrateKbps: String)
 
-data class AudioFileTags(val tags: Tags, val info: AudioInfo)
+/** [actualType] is set when the content doesn't match the extension, e.g. "m4a" for M4A audio named ".mp3". */
+data class AudioFileTags(val tags: Tags, val info: AudioInfo, val actualType: String? = null)

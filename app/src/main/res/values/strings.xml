@@ -84,4 +84,7 @@
     <string name="convert_errors">%1$d converted, %2$d failed: %3$s</string>
     <string name="convert_cancelled">Cancelled after %1$d files</string>
     <string name="notification_channel">MP3 conversion</string>
+    <string name="wrong_extension">This file is really %1$s but named .%2$s. Some players can\'t read it.</string>
+    <string name="fix_extension">Rename to .%1$s</string>
+    <string name="fix_extensions">Fix file extensions</string>
 </resources>
