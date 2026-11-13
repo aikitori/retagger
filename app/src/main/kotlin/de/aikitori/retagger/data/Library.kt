@@ -3,7 +3,9 @@ package de.aikitori.retagger.data
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.DocumentsContract.Document
 import de.aikitori.retagger.core.Artwork
@@ -78,6 +80,7 @@ class Library(private val context: Context) {
             val output = resolver.openOutputStream(entry.uri, "wt") ?: throw FileNotFoundException(entry.name)
             output.use { out -> file.inputStream().use { it.copyTo(out) } }
         }
+        rescan(entry.documentId)
     }
 
     /** Renames the file, keeping the extension. Returns the new entry. */
@@ -86,6 +89,7 @@ class Library(private val context: Context) {
         if (newName == entry.name) return entry
         val uri = DocumentsContract.renameDocument(resolver, entry.uri, newName) ?: entry.uri
         val id = DocumentsContract.getDocumentId(uri)
+        rescan(entry.documentId, id)
         return entry.copy(documentId = id, uri = DocumentsContract.buildDocumentUriUsingTree(tree, id), name = displayName(tree, id))
     }
 
@@ -124,10 +128,29 @@ class Library(private val context: Context) {
             }
             if (deleteOriginal) DocumentsContract.deleteDocument(resolver, entry.uri)
             val id = DocumentsContract.getDocumentId(uri)
+            rescan(*listOfNotNull(id, entry.documentId.takeIf { deleteOriginal }).toTypedArray())
             return Entry(id, DocumentsContract.buildDocumentUriUsingTree(tree, id), displayName(tree, id), isDirectory = false)
         } finally {
             mp3.delete()
         }
+    }
+
+    /**
+     * Asks Android's media library to read these files again. It may have indexed a new file while it was
+     * still empty, and some players (e.g. Fossify Music) then refuse to play it. Only works for the
+     * phone's own storage provider, whose document ids look like "primary:Music/a.mp3".
+     */
+    private fun rescan(vararg documentIds: String) {
+        val paths = documentIds.mapNotNull { id ->
+            val volume = id.substringBefore(':', "")
+            val relative = id.substringAfter(':', "")
+            when {
+                volume.isEmpty() || relative.isEmpty() -> null
+                volume == "primary" -> File(Environment.getExternalStorageDirectory(), relative).path
+                else -> "/storage/$volume/$relative"
+            }
+        }
+        if (paths.isNotEmpty()) runCatching { MediaScannerConnection.scanFile(context, paths.toTypedArray(), null, null) }
     }
 
     private fun <T> withCopy(entry: Entry, block: (File) -> T): T {
