@@ -183,7 +183,12 @@ class ConversionService : Service() {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             else -> 0
         }
-        ServiceCompat.startForeground(this, NOTIFICATION, notification, type)
+        // not ServiceCompat.startForeground: androidx.core 1.16 masks out mediaProcessing, leaving type "none"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(NOTIFICATION, notification, type)
+        } else {
+            startForeground(NOTIFICATION, notification)
+        }
     }
 
     private fun update() {
