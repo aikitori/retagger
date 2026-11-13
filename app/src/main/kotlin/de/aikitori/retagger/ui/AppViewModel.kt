@@ -290,13 +290,19 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         screen = Screen.Batch
         viewModelScope.launch {
             val tags = mutableListOf<Tags?>()
+            val errors = mutableListOf<String>()
             for ((i, entry) in files.withIndex()) {
                 batch = batch?.copy(progress = i + 1 to files.size)
                 tags += runCatching { withContext(Dispatchers.IO) { library.read(entry).tags } }
-                    .onFailure { say(R.string.error_read, entry.name, it.text()) }
+                    .onFailure { errors += it.text() }
                     .getOrNull()
             }
             batch = batch?.copy(tags = tags, progress = null)
+            when (errors.size) {
+                0 -> Unit
+                1 -> say(R.string.error_read, files[tags.indexOf(null)].name, errors.single())
+                else -> say(R.string.batch_read_errors, errors.size, files.size, errors.first())
+            }
         }
     }
 

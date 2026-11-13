@@ -76,4 +76,23 @@ class TagIOTest {
             options.isAndroid = false
         }
     }
+
+    @org.junit.jupiter.api.Test
+    fun `MP3 without a valid audio frame is still editable`() {
+        // jaudiotagger itself rejects this file with "No audio header found"
+        val file = File(dir, "broken.mp3")
+        val audio = ByteArray(3000) { (it % 7).toByte() }
+        file.writeBytes(audio)
+        org.junit.jupiter.api.assertThrows<Exception> { org.jaudiotagger.audio.AudioFileIO.read(file) }
+
+        TagIO.write(file, Tags().with(Field.TITLE, "Eins").with(Field.TRACK, "3"))
+        TagIO.write(file, TagIO.read(file).tags.with(Field.ARTIST, "Band").copy(artwork = Artwork(png, "image/png")))
+
+        val read = TagIO.read(file).tags
+        assertEquals(mapOf(Field.TITLE to "Eins", Field.TRACK to "3", Field.ARTIST to "Band"), read.fields)
+        assertEquals(Artwork(png, "image/png"), read.artwork)
+        // the audio data behind the tag stays untouched
+        val bytes = file.readBytes()
+        org.junit.jupiter.api.Assertions.assertArrayEquals(audio, bytes.copyOfRange(bytes.size - audio.size, bytes.size))
+    }
 }

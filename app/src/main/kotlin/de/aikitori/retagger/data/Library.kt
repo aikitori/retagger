@@ -15,6 +15,7 @@ import de.aikitori.retagger.core.extension
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.IOException
 
 /** Entry in a folder the user granted via the Storage Access Framework. */
 data class Entry(
@@ -91,6 +92,9 @@ class Library(private val context: Context) {
             val input = resolver.openInputStream(entry.uri) ?: throw FileNotFoundException(entry.name)
             input.use { inp -> file.outputStream().use { inp.copyTo(it) } }
             return block(file)
+        } catch (e: Exception) {
+            // error messages from jaudiotagger name the temp file, show the real name instead
+            throw IOException(e.message?.replace(file.path, entry.name)?.replace(file.name, entry.name), e)
         } finally {
             file.delete()
         }

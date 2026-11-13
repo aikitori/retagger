@@ -62,5 +62,7 @@
     <string name="number_tracks">Tracks 1–%1$d nach Dateinamen durchnummerieren</string>
     <string name="progress">Bearbeite %1$d von %2$d…</string>
     <string name="batch_done">%1$d Dateien fertig</string>
+    <string name="batch_read_errors">%1$d von %2$d Dateien ließen sich nicht lesen: %3$s</string>
+    <string name="unreadable">(nicht lesbar)</string>
     <string name="batch_errors">%1$d Dateien fertig, %2$d fehlgeschlagen</string>
 </resources>

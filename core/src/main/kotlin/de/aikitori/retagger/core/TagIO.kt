@@ -4,7 +4,10 @@ import org.jaudiotagger.audio.AudioFileIO
 import org.jaudiotagger.audio.mp3.MP3File
 import org.jaudiotagger.tag.FieldKey
 import org.jaudiotagger.tag.TagOptionSingleton
+import org.jaudiotagger.tag.Tag
 import org.jaudiotagger.tag.id3.ID3v11Tag
+import org.jaudiotagger.tag.id3.ID3v22Tag
+import org.jaudiotagger.tag.id3.ID3v23Tag
 import java.io.File
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -40,21 +43,27 @@ object TagIO {
     fun isSupported(name: String) = name.substringAfterLast('.', "").lowercase() in EXTENSIONS
 
     fun read(file: File): AudioFileTags {
-        val audio = AudioFileIO.read(file)
-        val tag = audio.tag
+        val audio = try {
+            AudioFileIO.read(file)
+        } catch (e: Exception) {
+            if (!isMp3(file)) throw e
+            null
+        }
+        val tag = if (audio != null) audio.tag else RawId3.read(file).tag
         val fields = buildMap<Field, String> {
             if (tag != null) {
                 for ((field, key) in fieldKeys) {
                     val value = runCatching { tag.getFirst(key) }.getOrNull().orEmpty()
                     val clean = Tags.normalize(field, value)
-                    if (clean.isNotEmpty()) put(field, clean)
+                    // ID3 reports a missing total as 0
+                    if (clean.isNotEmpty() && !(field.numeric && clean == "0")) put(field, clean)
                 }
             }
         }
         val artwork = tag?.firstArtwork?.let { art ->
             art.binaryData?.takeIf { it.isNotEmpty() }?.let { Artwork(it, art.mimeType ?: guessMime(it)) }
         }
-        val header = audio.audioHeader
+        val header = audio?.audioHeader
         val info = AudioInfo(
             format = header?.format.orEmpty().ifEmpty { file.extension.uppercase() },
             seconds = header?.trackLength ?: 0,
@@ -66,8 +75,33 @@ object TagIO {
     fun write(file: File, tags: Tags) {
         val invalid = tags.invalidFields()
         require(invalid.isEmpty()) { "Invalid values: $invalid" }
-        val audio = AudioFileIO.read(file)
-        val tag = audio.tagOrCreateAndSetDefault
+        val audio = try {
+            AudioFileIO.read(file)
+        } catch (e: Exception) {
+            if (!isMp3(file)) throw e
+            null
+        }
+        if (audio == null) {
+            // jaudiotagger found no valid MPEG frame, but the ID3 tag can still be rewritten in place
+            val raw = RawId3.read(file)
+            val tag = when (val old = raw.tag) {
+                null -> ID3v23Tag()
+                is ID3v22Tag -> ID3v23Tag(old)
+                else -> old
+            }
+            fill(tag, tags)
+            tag.write(file, raw.audioStart)
+            return
+        }
+        fill(audio.tagOrCreateAndSetDefault, tags)
+        // update an existing ID3v1 tag too, otherwise old players show the old values
+        if (audio is MP3File && audio.hasID3v1Tag() && audio.hasID3v2Tag()) {
+            audio.iD3v1Tag = ID3v11Tag(audio.iD3v2Tag)
+        }
+        audio.commit()
+    }
+
+    private fun fill(tag: Tag, tags: Tags) {
         for ((field, key) in fieldKeys) {
             val value = tags[field]
             if (value.isEmpty()) {
@@ -80,12 +114,9 @@ object TagIO {
         tags.artwork?.let { art ->
             tag.setField(SizedArtwork(art.data, art.mimeType))
         }
-        // update an existing ID3v1 tag too, otherwise old players show the old values
-        if (audio is MP3File && audio.hasID3v1Tag() && audio.hasID3v2Tag()) {
-            audio.iD3v1Tag = ID3v11Tag(audio.iD3v2Tag)
-        }
-        audio.commit()
     }
+
+    private fun isMp3(file: File) = file.extension.equals("mp3", ignoreCase = true)
 
     fun guessMime(data: ByteArray): String = when {
         data.size > 3 && data[0] == 0x89.toByte() && data[1] == 'P'.code.toByte() -> "image/png"

@@ -150,7 +150,7 @@ fun EditorScreen(model: AppViewModel, snackbar: SnackbarHostState) {
 }
 
 private fun AudioInfo.describe(): String {
-    val time = "%d:%02d".format(seconds / 60, seconds % 60)
+    val time = if (seconds > 0) "%d:%02d".format(seconds / 60, seconds % 60) else null
     return listOf(format, time, bitrateKbps.takeIf { it.isNotEmpty() }?.let { "$it kbps" })
         .filterNotNull()
         .joinToString(" · ")

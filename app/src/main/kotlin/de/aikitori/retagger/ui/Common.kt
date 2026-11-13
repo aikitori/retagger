@@ -117,6 +117,7 @@ fun TagField(
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String? = null,
+    various: Boolean = false,
     enabled: Boolean = true,
     trailing: @Composable (() -> Unit)? = null,
 ) {
@@ -126,7 +127,7 @@ fun TagField(
         onValueChange = onChange,
         modifier = modifier,
         enabled = enabled,
-        label = { Text(field.label()) },
+        label = { Text(if (various) "${field.label()} ${stringResource(R.string.various)}" else field.label()) },
         placeholder = placeholder?.let { { Text(it) } },
         singleLine = field != Field.COMMENT,
         isError = invalid,

@@ -132,6 +132,7 @@ fun BatchScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                         onChange = { model.setBatchField(field, it) },
                         modifier = modifier,
                         placeholder = if (common[field] == null) various else null,
+                        various = common[field] == null && edited == null,
                         enabled = !busy && !numbered,
                         trailing = if (edited != null) {
                             { IconButton(onClick = { model.setBatchField(field, null) }) { Icon(Icons.AutoMirrored.Filled.Undo, null) } }
@@ -142,8 +143,16 @@ fun BatchScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                 }
 
                 HorizontalDivider()
-                for (entry in state.entries) {
-                    Text(entry.name, style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                val unreadable = stringResource(R.string.unreadable)
+                state.entries.forEachIndexed { i, entry ->
+                    val failed = state.tags.getOrNull(i) == null
+                    Text(
+                        if (failed) "${entry.name} $unreadable" else entry.name,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = if (failed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
         }
