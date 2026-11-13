@@ -1,6 +1,7 @@
 package de.aikitori.retagger.ui
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,7 +26,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
@@ -50,10 +53,14 @@ private fun Mp3Quality.label() = stringResource(
 fun ConvertDialog(model: AppViewModel, files: List<Entry>, onDismiss: () -> Unit) {
     var quality by rememberSaveable { mutableStateOf(model.mp3Quality) }
     var delete by rememberSaveable { mutableStateOf(model.deleteOriginals) }
-    // for the progress notification; the conversion runs either way
-    val notifications = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+    val context = LocalContext.current
+    val start = {
+        onDismiss()
         model.convert(files, quality, delete)
     }
+    // for the progress notification; the conversion runs either way. The dialog must stay open until
+    // the answer arrives, otherwise this callback is gone and nothing starts.
+    val notifications = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { start() }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -86,12 +93,9 @@ fun ConvertDialog(model: AppViewModel, files: List<Entry>, onDismiss: () -> Unit
         },
         confirmButton = {
             TextButton(onClick = {
-                onDismiss()
-                if (Build.VERSION.SDK_INT >= 33) {
-                    notifications.launch(Manifest.permission.POST_NOTIFICATIONS)
-                } else {
-                    model.convert(files, quality, delete)
-                }
+                val ask = Build.VERSION.SDK_INT >= 33 &&
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                if (ask) notifications.launch(Manifest.permission.POST_NOTIFICATIONS) else start()
             }) { Text(stringResource(R.string.convert_start)) }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },

@@ -69,7 +69,14 @@ class ConversionService : Service() {
             if (state != null || request.files.isEmpty()) return
             pending = request
             state = ConversionState(request.files.size)
-            ContextCompat.startForegroundService(context, Intent(context, ConversionService::class.java))
+            try {
+                ContextCompat.startForegroundService(context, Intent(context, ConversionService::class.java))
+            } catch (e: Exception) {
+                // otherwise the app would think a conversion is still running and ignore new ones
+                pending = null
+                state = null
+                result = ConversionResult(e.localizedMessage ?: e.javaClass.simpleName, deletedOriginals = false)
+            }
         }
 
         fun cancel(context: Context) {
@@ -92,7 +99,13 @@ class ConversionService : Service() {
         val request = pending
         pending = null
         // startForeground must always be called after startForegroundService
-        startInForeground(notification(state ?: ConversionState(1)))
+        try {
+            startInForeground(notification(state ?: ConversionState(1)))
+        } catch (e: Exception) {
+            result = ConversionResult(e.localizedMessage ?: e.javaClass.simpleName, deletedOriginals = false)
+            finish()
+            return START_NOT_STICKY
+        }
         if (request == null || job != null) {
             if (job == null) finish()
             return START_NOT_STICKY
