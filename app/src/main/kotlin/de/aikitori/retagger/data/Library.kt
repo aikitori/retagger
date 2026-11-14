@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.DocumentsContract.Document
+import android.webkit.MimeTypeMap
 import de.aikitori.retagger.core.Artwork
 import de.aikitori.retagger.core.AudioFileTags
 import de.aikitori.retagger.core.ContentType
@@ -16,8 +17,8 @@ import de.aikitori.retagger.core.TagIO
 import de.aikitori.retagger.core.Tags
 import de.aikitori.retagger.core.baseName
 import de.aikitori.retagger.core.extension
-import de.aikitori.retagger.convert.Mp3Converter
-import de.aikitori.retagger.convert.Mp3Quality
+import de.aikitori.retagger.convert.AudioConverter
+import de.aikitori.retagger.convert.AudioQuality
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -120,34 +121,37 @@ class Library(private val context: Context) {
     }
 
     /**
-     * Converts [entry] to MP3 in [folderId] with the same base name, tags and cover included.
-     * The original is deleted afterwards if [deleteOriginal] is set. Returns the new file.
+     * Converts [entry] to the target format of [quality] in [folderId] with the same base name, tags and
+     * cover included. The original is deleted afterwards if [deleteOriginal] is set. Returns the new file.
      */
-    fun convertToMp3(
+    fun convert(
         entry: Entry,
         tree: Uri,
         folderId: String,
-        quality: Mp3Quality,
+        quality: AudioQuality,
         deleteOriginal: Boolean,
         progress: (Float) -> Unit,
         cancelled: () -> Boolean,
     ): Entry {
-        val mp3 = File.createTempFile("convert", ".mp3", workDir)
+        val extension = quality.target.extension
+        val converted = File.createTempFile("convert", ".$extension", workDir)
         try {
             val tags = withCopy(entry) { input ->
-                Mp3Converter.convert(input, mp3, quality, progress, cancelled)
+                AudioConverter.convert(input, converted, quality, progress, cancelled)
                 // a file without readable tags is still converted
                 runCatching { TagIO.read(input).tags }.getOrDefault(Tags())
             }
-            if (tags != Tags()) TagIO.write(mp3, tags)
+            if (tags != Tags()) TagIO.write(converted, tags)
 
             val folder = DocumentsContract.buildDocumentUriUsingTree(tree, folderId)
             // the provider appends " (1)" if the name is taken
-            val uri = DocumentsContract.createDocument(resolver, folder, "audio/mpeg", entry.name.baseName() + ".mp3")
-                ?: throw IOException("Could not create ${entry.name.baseName()}.mp3")
+            val name = "${entry.name.baseName()}.$extension"
+            // a mime type that maps back to the extension, otherwise the provider may append another one
+            val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: "application/octet-stream"
+            val uri = DocumentsContract.createDocument(resolver, folder, mime, name) ?: throw IOException("Could not create $name")
             try {
                 val output = resolver.openOutputStream(uri, "wt") ?: throw FileNotFoundException(uri.toString())
-                output.use { out -> mp3.inputStream().use { it.copyTo(out) } }
+                output.use { out -> converted.inputStream().use { it.copyTo(out) } }
             } catch (e: Exception) {
                 runCatching { DocumentsContract.deleteDocument(resolver, uri) }
                 throw e
@@ -157,7 +161,7 @@ class Library(private val context: Context) {
             rescan(*listOfNotNull(id, entry.documentId.takeIf { deleteOriginal }).toTypedArray())
             return Entry(id, DocumentsContract.buildDocumentUriUsingTree(tree, id), displayName(tree, id), isDirectory = false)
         } finally {
-            mp3.delete()
+            converted.delete()
         }
     }
 

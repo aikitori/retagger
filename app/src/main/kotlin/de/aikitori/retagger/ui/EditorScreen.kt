@@ -87,12 +87,10 @@ fun EditorScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                             menu = false
                             dialog = Dialog.RENAME
                         })
-                        if (model.convertible(state.entry).isNotEmpty()) {
-                            DropdownMenuItem(text = { Text(stringResource(R.string.convert_to_mp3)) }, enabled = !state.dirty, onClick = {
-                                menu = false
-                                dialog = Dialog.CONVERT
-                            })
-                        }
+                        DropdownMenuItem(text = { Text(stringResource(R.string.convert)) }, enabled = !state.dirty, onClick = {
+                            menu = false
+                            dialog = Dialog.CONVERT
+                        })
                     }
                 },
             )

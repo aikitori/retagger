@@ -13,21 +13,21 @@ import java.nio.file.StandardCopyOption
 object ContentType {
     private val FAMILIES = listOf(
         setOf("m4a", "m4b", "mp4", "m4p"),
-        setOf("ogg", "oga"),
+        setOf("ogg", "oga", "opus"),
         setOf("aif", "aiff", "aifc"),
     )
 
     /** The usual extension for the content, e.g. "m4a"; null if unknown. Leading ID3v2 tags are skipped. */
     fun detect(file: File): String? = RandomAccessFile(file, "r").use { raf ->
         val start = id3Prefix(raf)
-        if (raf.length() - start < 12) return null
-        val head = ByteArray(12)
+        if (raf.length() - start < 36) return null
+        val head = ByteArray(36)
         raf.seek(start)
         raf.readFully(head)
         fun text(from: Int, to: Int) = String(head, from, to - from, Charsets.ISO_8859_1)
         when {
             text(4, 8) == "ftyp" -> "m4a"
-            text(0, 4) == "OggS" -> "ogg"
+            text(0, 4) == "OggS" -> if (text(28, 36) == "OpusHead") "opus" else "ogg"
             text(0, 4) == "fLaC" -> "flac"
             text(0, 4) == "RIFF" && text(8, 12) == "WAVE" -> "wav"
             text(0, 4) == "FORM" -> "aiff"

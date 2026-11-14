@@ -15,14 +15,14 @@
 
 ## Features
 
-- **All common formats:** MP3 (ID3v1/v2), FLAC, Ogg Vorbis, M4A/M4B, WMA, WAV, AIFF, DSF.
+- **All common formats:** MP3 (ID3v1/v2), FLAC, Ogg Vorbis, Opus, M4A/M4B, WMA, WAV, AIFF, DSF.
 - **Edit one file:** title, artist, album, album artist, year, track/total, disc/total, genre, composer, comment and cover.
 - **Edit many files:** select an album and set the shared fields once. Fields you don't touch stay as they are.
 - **Number tracks:** 1 to n in file name order, total included.
 - **Suggestions:** values guessed from file and folder names (e.g. `Artist/Album (2004)/03 - Song.mp3`) appear as chips under the fields.
 - **Tags from file names:** `%track% - %artist% - %title%` turns `03 - Band - Song.mp3` into tags, with a live preview.
 - **Rename files from tags:** the same patterns the other way round.
-- **Convert to MP3:** M4A, FLAC, OGG, WAV and more, one file or a whole selection. VBR or CBR, tags and cover are copied, originals can be deleted afterwards.
+- **Convert:** to MP3, M4A (AAC) or Opus, one file or a whole selection, running in the background. Tags and cover are copied, originals can be deleted afterwards.
 - **Wrong extensions:** detects e.g. M4A audio saved as `.mp3`, tags it correctly and renames it on request.
 - **Covers:** pick any image from the gallery, large images are scaled down to 1000 px.
 - **Only the folder you choose:** access through Android's folder picker, no storage permission needed.
@@ -40,7 +40,7 @@ Track and disc numbers are written with two digits when renaming; underscores in
 ## Development
 
 ```
-core/          tag reading/writing (jaudiotagger + own MP4 writer), file name patterns, suggestions. Plain JVM, unit tested
+core/          tags (jaudiotagger, own MP4 and Opus writers), format detection, resampler, file name patterns. Plain JVM, unit tested
 app/           Android app (Kotlin, Jetpack Compose), folder access via the Storage Access Framework
 app/src/main/cpp/  LAME 3.100 MP3 encoder (unchanged, built as libmp3lame.so) and its JNI bridge
 ```

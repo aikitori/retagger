@@ -16,8 +16,8 @@ import java.util.logging.Logger
 
 /** Reads and writes tags via jaudiotagger. The file needs the right extension. */
 object TagIO {
-    /** File extensions jaudiotagger can handle. */
-    val EXTENSIONS = setOf("mp3", "flac", "ogg", "oga", "m4a", "m4b", "mp4", "wma", "wav", "aif", "aiff", "aifc", "dsf")
+    /** File extensions Retagger can handle (jaudiotagger, plus Opus via [OggOpus]). */
+    val EXTENSIONS = setOf("mp3", "flac", "ogg", "oga", "opus", "m4a", "m4b", "mp4", "wma", "wav", "aif", "aiff", "aifc", "dsf")
 
     private val fieldKeys = mapOf(
         Field.TITLE to FieldKey.TITLE,
@@ -50,6 +50,7 @@ object TagIO {
      */
     fun read(file: File): AudioFileTags {
         val type = ContentType.detect(file)
+        if (type == "opus") return OggOpus.read(file)
         val audio = try {
             open(file, type)
         } catch (e: Exception) {
@@ -86,6 +87,7 @@ object TagIO {
         // never put an MP3 tag in front of e.g. M4A audio named ".mp3"; remove one if it is already there
         ContentType.repair(file)
         val type = ContentType.detect(file)
+        if (type == "opus") return OggOpus.write(file, tags)
         val audio = try {
             open(file, type)
         } catch (e: Exception) {

@@ -88,10 +88,10 @@ fun FolderScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                 },
                 actions = {
                     if (selecting) {
-                        val convertible = model.convertible()
-                        if (convertible.isNotEmpty()) {
-                            IconButton(onClick = { converting = convertible }) {
-                                Icon(Icons.Filled.SwapHoriz, stringResource(R.string.convert_to_mp3))
+                        val files = model.selectedFiles()
+                        if (files.isNotEmpty()) {
+                            IconButton(onClick = { converting = files }) {
+                                Icon(Icons.Filled.SwapHoriz, stringResource(R.string.convert))
                             }
                         }
                         IconButton(onClick = model::selectAll) { Icon(Icons.Filled.SelectAll, stringResource(R.string.select_all)) }

@@ -15,8 +15,9 @@
 - [ ] Test on a phone: FLAC, OGG; large folder; SD card
 - [ ] Screenshots for the README
 - [x] Convert to MP3 (MediaCodec + LAME), single and batch, optionally deleting originals
-- [ ] Test the MP3 converter on a phone
-- [ ] Opus (not supported by jaudiotagger, would need another library)
+- [x] MP3 converter tested on a phone
+- [x] Convert to M4A (AAC) and Opus, read/write Opus tags
+- [ ] Test M4A and Opus conversion on a phone
 - [ ] More fields (lyrics, BPM, compilation)
 - [ ] "Open with" from other apps, save cover as file
 - [ ] Undo for batch edits

@@ -40,7 +40,7 @@ data class ConversionRequest(
     val tree: Uri,
     val folderId: String,
     val files: List<Entry>,
-    val quality: Mp3Quality,
+    val quality: AudioQuality,
     val deleteOriginals: Boolean,
 )
 
@@ -129,7 +129,7 @@ class ConversionService : Service() {
             var lastNotified = 0f
             val outcome = runCatching {
                 withContext(Dispatchers.IO) {
-                    library.convertToMp3(
+                    library.convert(
                         entry, request.tree, request.folderId, request.quality, request.deleteOriginals,
                         progress = { p ->
                             state = state?.copy(fileProgress = p)

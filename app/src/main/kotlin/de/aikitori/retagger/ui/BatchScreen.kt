@@ -99,12 +99,10 @@ fun BatchScreen(model: AppViewModel, snackbar: SnackbarHostState) {
                             menu = false
                             model.fixExtensions()
                         })
-                        if (state.entries.any { !it.name.endsWith(".mp3", ignoreCase = true) }) {
-                            DropdownMenuItem(text = { Text(stringResource(R.string.convert_to_mp3)) }, enabled = !state.dirty, onClick = {
-                                menu = false
-                                dialog = BatchDialog.CONVERT
-                            })
-                        }
+                        DropdownMenuItem(text = { Text(stringResource(R.string.convert)) }, enabled = !state.dirty, onClick = {
+                            menu = false
+                            dialog = BatchDialog.CONVERT
+                        })
                     }
                 },
             )
@@ -174,11 +172,7 @@ fun BatchScreen(model: AppViewModel, snackbar: SnackbarHostState) {
     val labels = fieldLabels()
     when (dialog) {
         BatchDialog.NONE -> Unit
-        BatchDialog.CONVERT -> ConvertDialog(
-            model,
-            state.entries.filterNot { it.name.endsWith(".mp3", ignoreCase = true) },
-            onDismiss = { dialog = BatchDialog.NONE },
-        )
+        BatchDialog.CONVERT -> ConvertDialog(model, state.entries, onDismiss = { dialog = BatchDialog.NONE })
         BatchDialog.DISCARD -> DiscardDialog(onDismiss = { dialog = BatchDialog.NONE }, onDiscard = {
             dialog = BatchDialog.NONE
             model.backToFolder()

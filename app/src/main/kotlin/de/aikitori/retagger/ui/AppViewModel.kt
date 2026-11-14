@@ -26,7 +26,8 @@ import de.aikitori.retagger.convert.ConversionRequest
 import de.aikitori.retagger.convert.ConversionResult
 import de.aikitori.retagger.convert.ConversionService
 import de.aikitori.retagger.convert.ConversionState
-import de.aikitori.retagger.convert.Mp3Quality
+import de.aikitori.retagger.convert.AudioQuality
+import de.aikitori.retagger.convert.Target
 import de.aikitori.retagger.data.Entry
 import de.aikitori.retagger.data.Library
 import kotlinx.coroutines.Dispatchers
@@ -104,8 +105,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     /** Runs in [ConversionService], so it survives the app going to the background. */
     val conversion: ConversionState? get() = ConversionService.state
 
-    var mp3Quality by mutableStateOf(
-        runCatching { Mp3Quality.valueOf(prefs.getString("mp3_quality", null)!!) }.getOrDefault(Mp3Quality.VBR_V2),
+    var convertQuality by mutableStateOf(
+        runCatching { AudioQuality.valueOf(prefs.getString("convert_quality", null)!!) }.getOrDefault(AudioQuality.MP3_V2),
     )
         private set
     var deleteOriginals by mutableStateOf(prefs.getBoolean("delete_originals", false))
@@ -318,18 +319,22 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     // --- MP3 conversion ---
 
-    /** Files of the selection (or [single]) that are not MP3 yet. */
-    fun convertible(single: Entry? = null): List<Entry> =
-        (single?.let(::listOf) ?: entries.filter { it.documentId in selection })
-            .filter { !it.isDirectory && !it.name.endsWith(".mp3", ignoreCase = true) }
+    /** Selected music files (no folders). */
+    fun selectedFiles(): List<Entry> = entries.filter { it.documentId in selection && !it.isDirectory }
 
-    fun convert(files: List<Entry>, quality: Mp3Quality, deleteOriginals: Boolean) {
+    /** The quality last used for [target], or its default. */
+    fun qualityFor(target: Target): AudioQuality =
+        runCatching { AudioQuality.valueOf(prefs.getString("convert_quality_${target.name}", null)!!) }
+            .getOrDefault(AudioQuality.default(target))
+
+    fun convert(files: List<Entry>, quality: AudioQuality, deleteOriginals: Boolean) {
         val tree = tree ?: return
         val folder = path.lastOrNull() ?: return
-        mp3Quality = quality
+        convertQuality = quality
         this.deleteOriginals = deleteOriginals
         prefs.edit {
-            putString("mp3_quality", quality.name)
+            putString("convert_quality", quality.name)
+            putString("convert_quality_${quality.target.name}", quality.name)
             putBoolean("delete_originals", deleteOriginals)
         }
         ConversionService.start(getApplication(), ConversionRequest(tree, folder.documentId, files, quality, deleteOriginals))
