@@ -17,7 +17,7 @@
 - [x] Convert to MP3 (MediaCodec + LAME), single and batch, optionally deleting originals
 - [x] MP3 converter tested on a phone
 - [x] Convert to M4A (AAC) and Opus, read/write Opus tags
-- [ ] Test M4A and Opus conversion on a phone
+- [x] M4A and Opus conversion tested on a phone
 - [ ] More fields (lyrics, BPM, compilation)
 - [ ] "Open with" from other apps, save cover as file
 - [ ] Undo for batch edits
