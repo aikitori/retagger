@@ -1,6 +1,6 @@
 # Plan
 
-## Done (v0.1)
+## Done (v1.0)
 
 - [x] core: read/write tags for all jaudiotagger formats, artwork without javax.imageio (Android)
 - [x] core: file name patterns (tags from file name, rename), batch editing, natural sort order
@@ -13,7 +13,7 @@
 
 - [x] Tested on a phone: MP3 (incl. files without valid audio header), fragmented M4A
 - [ ] Test on a phone: FLAC, OGG; large folder; SD card
-- [ ] Screenshots for the README
+- [x] Screenshots for the README
 - [x] Convert to MP3 (MediaCodec + LAME), single and batch, optionally deleting originals
 - [x] MP3 converter tested on a phone
 - [x] Convert to M4A (AAC) and Opus, read/write Opus tags
