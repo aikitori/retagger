@@ -1,6 +1,6 @@
 # Run tests and build the APK.
-# - push to main / manual: signed APK as a GitHub release (v0.<run number>).
-# - other branches and pull requests: check build only (debug APK as artifact).
+# - version tag (v1.0, v1.1, ...): signed APK as a GitHub release, version name from the tag.
+# - everything else: check build only (debug APK as artifact).
 name: Build
 
 on:
@@ -19,7 +19,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      RELEASE: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+      RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
     steps:
       - uses: actions/checkout@v4
 
@@ -59,7 +59,8 @@ jobs:
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          ./gradlew --console=plain :app:assembleRelease -PversionCode=${{ github.run_number }} -PversionName=0.${{ github.run_number }}
+          # versionCode keeps counting up across tags, so updates install over the existing app
+          ./gradlew --console=plain :app:assembleRelease -PversionCode=${{ github.run_number }} -PversionName=${GITHUB_REF_NAME#v}
           cp app/build/outputs/apk/release/app-release.apk "$GITHUB_WORKSPACE/retagger.apk"
           # make sure it really is signed with the fixed key
           apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
@@ -69,14 +70,11 @@ jobs:
         if: env.RELEASE == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0.${{ github.run_number }}
-          name: Retagger v0.${{ github.run_number }}
-          target_commitish: ${{ github.sha }}
+          name: Retagger ${{ github.ref_name }}
           make_latest: true
+          prerelease: false
           files: retagger.apk
-          body: |
-            Built automatically from ${{ github.sha }}.
-            Download: https://github.com/${{ github.repository }}/releases/latest/download/retagger.apk
+          generate_release_notes: true
 
       - name: Check build (debug APK)
         if: env.RELEASE != 'true'

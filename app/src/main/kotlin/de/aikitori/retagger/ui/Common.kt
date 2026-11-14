@@ -59,11 +59,11 @@ import de.aikitori.retagger.core.Field
 import de.aikitori.retagger.core.FilenamePattern
 
 @Composable
-fun RetaggerTheme(content: @Composable () -> Unit) {
+fun RetaggerTheme(dynamic: Boolean = true, content: @Composable () -> Unit) {
     val dark = isSystemInDarkTheme()
     val context = LocalContext.current
     val colors = when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> if (dark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        dynamic && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> if (dark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         dark -> darkColorScheme(primary = Color(0xFF8FD1B8), secondary = Color(0xFFE5C9A0))
         else -> lightColorScheme(primary = Color(0xFF2E5E4E), secondary = Color(0xFF7A5C33))
     }

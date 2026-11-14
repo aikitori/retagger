@@ -11,6 +11,10 @@
 
 [**Download APK**](https://github.com/aikitori/retagger/releases/latest/download/retagger.apk)
 
+[<img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="56">](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/aikitori/retagger)
+
+<img src="docs/folder.png" width="200" alt="Folder"> <img src="docs/editor.png" width="200" alt="Editor with suggestions"> <img src="docs/batch.png" width="200" alt="Editing a whole album"> <img src="docs/convert.png" width="200" alt="Converting">
+
 </div>
 
 ## Features
@@ -50,7 +54,7 @@ app/src/main/cpp/  LAME 3.100 MP3 encoder (unchanged, built as libmp3lame.so) an
 ./gradlew :app:assembleDebug    # needs the Android SDK and NDK
 ```
 
-Every push to `main` builds a signed APK and publishes it as a GitHub release.
+Pushing a version tag (`git tag v1.1 && git push origin v1.1`) builds a signed APK and publishes it as a GitHub release.
 
 ## License
 

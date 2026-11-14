@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -135,6 +136,29 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun Throwable.text() = localizedMessage ?: javaClass.simpleName
+
+    /** Sets a state directly, for screenshot tests. */
+    @VisibleForTesting
+    internal fun showSample(
+        tree: Uri,
+        path: List<Folder>,
+        entries: List<Entry>,
+        selection: Set<String> = emptySet(),
+        editor: EditorState? = null,
+        batch: BatchState? = null,
+    ) {
+        this.tree = tree
+        this.path = path
+        this.entries = entries
+        this.selection = selection
+        this.editor = editor
+        this.batch = batch
+        screen = when {
+            editor != null -> Screen.Editor
+            batch != null -> Screen.Batch
+            else -> Screen.Folder
+        }
+    }
 
     // --- folder ---
 
